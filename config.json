@@ -1,0 +1,25 @@
+{
+    "websites": [
+        {
+            "name": "Amazon",
+            "url": "https://www.amazon.com/s?k={product}",
+            "selectors": {
+                "price": ".a-price-whole"
+            }
+        },
+        {
+            "name": "eBay",
+            "url": "https://www.ebay.com/sch/i.html?_nkw={product}",
+            "selectors": {
+                "price": ".s-item__price"
+            }
+        },
+        {
+            "name": "Walmart",
+            "url": "https://www.walmart.com/search/?query={product}",
+            "selectors": {
+                "price": ".price-main"
+            }
+        }
+    ]
+}
