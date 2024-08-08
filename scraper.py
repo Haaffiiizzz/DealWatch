@@ -28,6 +28,6 @@ def scrape_data(product):
     return results
 
 if __name__ == "__main__":
-    product = "phone"
+    product = "macbook"
     results = scrape_data(product)
     print(results)
