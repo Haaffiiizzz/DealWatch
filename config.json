@@ -2,7 +2,7 @@
     "websites": [
         {
             "name": "Amazon",
-            "url": "https://www.amazon.com/s?k={product}",
+            "url": "https://www.amazon.com/{product}/s?k={product}",
             "selectors": {
                 "price": ".a-price-whole"
             }
