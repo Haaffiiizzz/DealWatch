@@ -14,16 +14,5 @@ response = requests.get(url)
 # Parse the HTML content of the page
 soup = BeautifulSoup(response.content, 'html.parser')
 
-# Find all job cards on the page
-job_cards = soup.find_all('div', class_='jobsearch-SerpJobCard')
-
-# Loop through each job card and extract details
-for job in job_cards:
-    title = job.find('h2', class_='title').text.strip()
-    company = job.find('span', class_='company').text.strip()
-
-    print(f"Job Title: {title}")
-    print(f"Company: {company}")
-    print("-" * 40)
-
-print(":done")
+# Print the HTML to see if the structure matches what the script expects
+print(soup.prettify())
