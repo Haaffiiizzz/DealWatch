@@ -1,22 +1,29 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
+from selenium.webdriver.common.by import By
 import time
 
-# Setup the webdriver (make sure you have downloaded the correct driver for your browser)
-driver = webdriver.Chrome()  # You can also use Firefox or another supported browser
-driver.get("https://www.indeed.com/q-Data-Scientist-l-New-York,-NY-jobs.html")
+job = input("What kind of job you want to search: \n")
+location = input("Enter the location for the job: \n")
 
-# Wait for the page to fully load
-time.sleep(5)
+driver = webdriver.Chrome()
+link = f"https://ca.indeed.com/jobs?q={job}&l={location}"
+driver.get(link)
 
-# Get the page source and create a BeautifulSoup object
+
+time.sleep(2)
+
 soup = BeautifulSoup(driver.page_source, 'html.parser')
 
-# Now you can proceed with scraping as usual
 job_titles = soup.find_all('h2', {'class': 'jobTitle'})
 
-for title in job_titles:
-    print(title.text.strip())
+job_locations = soup.find_all('div', {'data-testid': 'text-location'})
 
-# Close the browser
-driver.quit()
+print("this is job titles", job_titles)
+print("this is job location", job_locations)
+
+for title, location in zip(job_titles, job_locations):
+    print(title.text.strip())
+    print(location.text.strip())
+
+
