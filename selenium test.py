@@ -17,13 +17,13 @@ soup = BeautifulSoup(driver.page_source, 'html.parser')
 
 job_titles = soup.find_all('h2', {'class': 'jobTitle'})
 
+job_companies = soup.find_all('span', {'data-testid': 'company-name'})
+
 job_locations = soup.find_all('div', {'data-testid': 'text-location'})
 
-print("this is job titles", job_titles)
-print("this is job location", job_locations)
 
-for title, location in zip(job_titles, job_locations):
-    print(title.text.strip())
-    print(location.text.strip())
+for title, company, location in zip(job_titles, job_companies, job_locations):
+    print(f"{title.text.strip()} | {company.text.strip()} | {location.text.strip()}")
+   
 
 
