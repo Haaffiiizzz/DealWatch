@@ -26,7 +26,7 @@ time.sleep(2)
 job = driver.find_element(By.ID, "job_1fb81916d084cfa7")
 job.click()
 
-time.sleep(2)
+time.sleep(3)
 soup = BeautifulSoup(driver.page_source, 'html.parser')
 
 print(soup)
