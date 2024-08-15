@@ -21,12 +21,20 @@ def searchSubmit(searchQuery):
     submitButton = driver.find_element(By.ID, "g")
     submitButton.click()
 
+def getProducts():
+    print("hello")
+    
 
 searchSubmit(searchQuery)
 
-soup = BeautifulSoup(driver.page_source, 'html.parser')
 
-print(soup)
+soup = BeautifulSoup(driver.page_source, 'html.parser')
+items = soup.find_all("div", {"data-component-type" : "s-search-result"})
+
+for item in items:
+    name = item.find("h2")
+    print("\n", name.text, "\n")
+
 
 try:
     while True:
