@@ -33,7 +33,9 @@ items = soup.find_all("div", {"data-component-type" : "s-search-result"})
 
 for item in items:
     name = item.find("h2")
-    print("\n", name.text, "\n")
+    price = item.find("span", {"class" :"a-price-whole"})
+    
+    print("\n", "item", name.text, "price", price.text, "\n")
 
 
 try:
