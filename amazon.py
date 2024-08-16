@@ -2,6 +2,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 import time
+from selenium.webdriver.common.keys import Keys
 
 
 driver = webdriver.Chrome()
@@ -10,16 +11,20 @@ driver = webdriver.Chrome()
 link = "https://www.amazon.ca/s?k"
 driver.get(link)
 
+def first():
+    search = driver.find_element(By.ID, "g")
+    search.click()
+
+first()
+
 searchQuery = "Gaming PC"
 
 def searchSubmit(searchQuery):
-    
-    searchBar = driver.find_element(By.ID, "f")
+    searchBar = driver.find_element(By.ID, "twotabsearchtextbox")
     searchBar.click()
+    searchBar.clear()
     searchBar.send_keys(searchQuery)
-    
-    submitButton = driver.find_element(By.ID, "g")
-    submitButton.click()
+    searchBar.send_keys(Keys.RETURN)
 
 def getProducts():
     print("hello")
@@ -35,7 +40,7 @@ for item in items:
     name = item.find("h2")
     price = item.find("span", {"class" :"a-price-whole"})
     
-    print("\n", "item", name.text, "price", price.text, "\n")
+    print("\n", "item", name.text, "price", price.text if price else "None", "\n")
 
 
 try:
