@@ -54,7 +54,7 @@ searchSubmit(searchQuery)
 getProducts(searchQuery)
 
 
-
+# to keep the seleniuum open
 
 
 try:
