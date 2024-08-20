@@ -1,64 +1,52 @@
-from selenium import webdriver
 from bs4 import BeautifulSoup
-from selenium.webdriver.common.by import By
+from selenium import webdriver
 import time
-from selenium.webdriver.common.keys import Keys
-from fuzzywuzzy import fuzz
+from selenium.webdriver.chrome.options import Options
+import json
 
+# url = 'https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share'
+url = 'https://www.amazon.ca/hz/wishlist/ls/N6BMVY7ONH?ref_=wl_share'
 
-driver = webdriver.Chrome()
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+driver = webdriver.Chrome(options = chrome_options)
+driver.get(url)
 
-
-link = "https://www.amazon.ca/s?k"
-driver.get(link)
-
-def first():
-    search = driver.find_element(By.ID, "g")
-    search.click()
-
-first()
-
-searchQuery = "32 inch monitor"
-
-def searchSubmit(searchQuery):
-    searchBar = driver.find_element(By.ID, "twotabsearchtextbox")
-    searchBar.click()
-    searchBar.clear()
-    searchBar.send_keys(searchQuery)
-    searchBar.send_keys(Keys.RETURN)
-
-def getProducts(searchQuery, threshold = 80):
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    items = soup.find_all("div", {"data-component-type" : "s-search-result"})
+"""
+code to ensure scrolling to end of wishlist
     
-    for item in items:
-        titleTag = item.find("div", {"data-cy" : "title-recipe"})
-        
-        if titleTag:
-            title = titleTag.get_text(strip=True)
-            score = fuzz.token_set_ratio(searchQuery.lower(), title.lower())
-            
-            if score >= threshold:
-                
-                priceWhole = item.find("span", class_ = "a-price-whole")
-                priceFraction = item.find("span", class_ = "a-price-fraction")
-                
-                if priceWhole and priceFraction:
-                    price = f"${priceWhole.get_text(strip=True)}{priceFraction.get_text(strip=True)}"
-                else:
-                    price = None
-                    
-                print(f"{title}: {price}\n")
-        
-searchSubmit(searchQuery)
-getProducts(searchQuery)
+"""
+last_height = driver.execute_script("return document.body.scrollHeight")
+
+while True:
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    time.sleep(1)
+
+    new_height = driver.execute_script("return document.body.scrollHeight")
+    if new_height == last_height:
+        break
+    last_height = new_height
 
 
-# to keep the seleniuum open
+soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+names = soup.find_all("h2", {"class": "a-size-base"})
+prices = soup.find_all("span", {"class": "a-price"})
 
 
-try:
-    while True:
-        time.sleep(1)
-except KeyboardInterrupt:
-    driver.quit()
+wishlist = {}
+
+for name, price in zip(names, prices):
+
+    name = name.text.strip()
+    
+    whole = price.find("span", {"class": "a-price-whole"})
+    frac = price.find("span", {"class": "a-price-fraction"})
+    
+    price = f"{whole.text.strip()}{frac.text.strip()}"
+    
+    wishlist[name] = price
+
+with open("wishlist.json", "w") as file:
+    json.dump(wishlist, file, indent = 4)
+    
