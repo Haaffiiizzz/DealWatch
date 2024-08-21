@@ -31,22 +31,28 @@ while True:
 soup = BeautifulSoup(driver.page_source, 'html.parser')
 
 names = soup.find_all("h2", {"class": "a-size-base"})
+brands = soup.find_all("span", {"class": "a-size-base"})
 prices = soup.find_all("span", {"class": "a-price"})
 
 
-wishlist = {}
+wishlist = []
 
-for nameTag, priceTag in zip(names, prices):
-
+for nameTag, brandTag, priceTag in zip(names, brands, prices):
+    Dict = {}
     name = nameTag.text.strip()
+    
+    brand = brandTag.text.strip().split()[1] if "by" in brandTag.text.strip() else None
     
     whole = priceTag.find("span", {"class": "a-price-whole"})
     frac = priceTag.find("span", {"class": "a-price-fraction"})
-    
     price = f"{whole.text.strip()}{frac.text.strip()}"
     
-    wishlist[name] = price
+    Dict["Item"] = name
+    Dict["Brand"] = brand
+    Dict["Price"] = price
+    
+    wishlist.append(Dict)
 
 with open("AmazonWishlist.json", "w") as file:
-    json.dump(wishlist, file, indent = 4)
+    json.dump(wishlist, file, indent = 1)
     
