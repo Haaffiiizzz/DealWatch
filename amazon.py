@@ -36,17 +36,17 @@ prices = soup.find_all("span", {"class": "a-price"})
 
 wishlist = {}
 
-for name, price in zip(names, prices):
+for nameTag, priceTag in zip(names, prices):
 
-    name = name.text.strip()
+    name = nameTag.text.strip()
     
-    whole = price.find("span", {"class": "a-price-whole"})
-    frac = price.find("span", {"class": "a-price-fraction"})
+    whole = priceTag.find("span", {"class": "a-price-whole"})
+    frac = priceTag.find("span", {"class": "a-price-fraction"})
     
     price = f"{whole.text.strip()}{frac.text.strip()}"
     
     wishlist[name] = price
 
-with open("wishlist.json", "w") as file:
+with open("AmazonWishlist.json", "w") as file:
     json.dump(wishlist, file, indent = 4)
     

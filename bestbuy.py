@@ -1,7 +1,7 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
-import time
+import json
 from selenium.webdriver.common.keys import Keys
 
 driver = webdriver.Chrome()
@@ -11,4 +11,8 @@ driver.get(link)
 
 soup = BeautifulSoup(driver.page_source, "html.parser")
 
-print(soup.text.strip())
+nameTag = soup.find("h1", {"class": "font-best-buy text-body-lg font-medium sm:text-title-sm"})
+brandTag = soup.find("a", {"data-automation": "pdp-brandname-link"})
+priceTag = soup.find("span", {"class": "style-module_screenReaderOnly__4QmbS style-module_large__g5jIz"})
+
+
