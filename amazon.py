@@ -4,8 +4,8 @@ import time
 from selenium.webdriver.chrome.options import Options
 import json
 
-# url = 'https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share'
-url = 'https://www.amazon.ca/hz/wishlist/ls/N6BMVY7ONH?ref_=wl_share'
+url = 'https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share'
+# url = 'https://www.amazon.ca/hz/wishlist/ls/N6BMVY7ONH?ref_=wl_share'
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")
