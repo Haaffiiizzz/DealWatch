@@ -2,16 +2,18 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
 from selenium.webdriver.chrome.options import Options
-import json
+import requests
 
 url = 'https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share'
 
 def getWishlistData(wishlistURL):
-    
+    """
+    Code to open  selenium headless i.e without opening the browser directly
+    """
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless=new")
     driver = webdriver.Chrome(options = chrome_options)
-    driver.get(url)
+    driver.get(wishlistURL)
 
     """
     code to ensure scrolling to end of wishlist
@@ -35,15 +37,15 @@ def getWishlistData(wishlistURL):
     brands = soup.find_all("span", {"class": "a-size-base"})
     prices = soup.find_all("span", {"class": "a-price"})
 
-    brands = [brand.text.strip() for brand in brands if "by" in brand.text.strip().lower()]
+    brands = [brand.text.strip() for brand in brands if "by" in brand.text.strip().lower()]   # issue with having tags that fit filter but its not the brand name
     
     wishlist = []
 
     for nameTag, brand, priceTag in zip(names, brands, prices):
         Dict = {}
-        name = nameTag.text.strip()
         
-        brand = brand.split()[1]
+        name = nameTag.text.strip()
+        brand = " ".join(brand.split()[1:])
         
         whole = priceTag.find("span", {"class": "a-price-whole"})
         frac = priceTag.find("span", {"class": "a-price-fraction"})
@@ -57,7 +59,35 @@ def getWishlistData(wishlistURL):
     
     return wishlist
 
-# print(getWishlistData(url))
-with open("AmazonWishlist.json", "w") as file:
-    json.dump(getWishlistData(url), file, indent = 1)
+def getDataLink(itemLink):
+    """
+    Code to open  selenium headless i.e without opening the browser directly
+    """
+    chrome_options = Options()
+    chrome_options.add_argument("--headless=new")
+    driver = webdriver.Chrome(options = chrome_options)
+    driver.get(itemLink)
+
+    """
+    code to ensure scrolling to end of wishlist
+    """
+    last_height = driver.execute_script("return document.body.scrollHeight")
+
+    while True:
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(1)
+
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        if new_height == last_height:
+            break
+        last_height = new_height
+
+
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    title = soup.find("span", {"id": "productTitle"})
+    print(title.text)
+    
+    
+
+
     
