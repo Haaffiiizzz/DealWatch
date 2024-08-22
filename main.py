@@ -1,9 +1,25 @@
 from amazon import getWishlistData, getDataLink
 
-while True:
-    try:
-        getDataLink("https://a.co/d/2PrUwpj")
-        break
-    except Exception as e:
-        print(e.args[0])
-        
+what = input("do you want to import a wishlist or singular item?(Answer W for Wishlist or S for SIngular item):\n")
+
+if what.upper() == "W":
+    link = input("Paste in the link to your wishlist:\n")
+    while True:
+        try:
+            wishlist = getWishlistData(link)
+            break
+        except Exception as e:
+            print(e.args[0])
+    print("Wishlist saved!")
+    
+else:
+    link = input("Paste in the link to your item:\n")
+    while True:
+        try:
+            itemData = getDataLink(link)
+            break
+        except Exception as e:
+            print(e.args[0])
+    print("Item saved!")
+    
+    
