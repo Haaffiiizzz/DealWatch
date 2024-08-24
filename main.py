@@ -9,9 +9,9 @@ if what.upper() == "W":
             wishlist = getWishlistData(link)
             break
         except Exception as e:
-            print(e.args[0])
+            print(e)
     print("Wishlist saved!")
-    
+    items = wishlist
 else:
     link = input("Paste in the link to your item:\n")
     while True:
@@ -19,7 +19,9 @@ else:
             itemData = getDataLink(link)
             break
         except Exception as e:
-            print(e.args[0])
+            print(e)
     print("Item saved!")
+    items = itemData
     
     
+print(items)
