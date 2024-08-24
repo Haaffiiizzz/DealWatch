@@ -60,14 +60,25 @@ def getWishlistData(wishlistURL):
     return wishlist
 
 def getDataLink(itemLink):
+    Dict = {}
     chrome_options = Options()
     chrome_options.add_argument("--headless=new")
     driver = webdriver.Chrome(options = chrome_options)
     driver.get(itemLink)
     
     soup = BeautifulSoup(driver.page_source, 'html.parser')
+    
     title = soup.find("span", {"id": "productTitle"}).text.strip()
-    price = soup.find()
+    whole = soup.find("span", {"class": "a-price-whole"}).text.strip()
+    frac = soup.find("span", {"class": "a-price-fraction"}).text.strip()
+    price = f"{whole}{frac}"
+    brand = " ".join(soup.find("a", {"id": "bylineInfo"}).text.strip().split()[1:])
+    
+    Dict["Item"] = title
+    Dict["Brand"] = brand
+    Dict["Price"] = price
+    
+    return Dict
     
     
     
