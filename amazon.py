@@ -44,14 +44,14 @@ def getWishlistData(wishlistURL):
     for nameTag, brand, priceTag in zip(names, brands, prices):
         Dict = {}
         
-        name = nameTag.text.strip()
+        title = nameTag.text.strip()
         brand = " ".join(brand.split()[1:])
         
         whole = priceTag.find("span", {"class": "a-price-whole"})
         frac = priceTag.find("span", {"class": "a-price-fraction"})
         price = f"{whole.text.strip()}{frac.text.strip()}"
         
-        Dict["Item"] = name
+        Dict["Item"] = title
         Dict["Brand"] = brand
         Dict["Price"] = price
         
@@ -60,32 +60,15 @@ def getWishlistData(wishlistURL):
     return wishlist
 
 def getDataLink(itemLink):
-    """
-    Code to open  selenium headless i.e without opening the browser directly
-    """
     chrome_options = Options()
     chrome_options.add_argument("--headless=new")
     driver = webdriver.Chrome(options = chrome_options)
     driver.get(itemLink)
-
-    """
-    code to ensure scrolling to end of wishlist
-    """
-    last_height = driver.execute_script("return document.body.scrollHeight")
-
-    while True:
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(1)
-
-        new_height = driver.execute_script("return document.body.scrollHeight")
-        if new_height == last_height:
-            break
-        last_height = new_height
-
-
+    
     soup = BeautifulSoup(driver.page_source, 'html.parser')
-    title = soup.find("span", {"id": "productTitle"})
-    print(title.text)
+    title = soup.find("span", {"id": "productTitle"}).text.strip()
+    price = soup.find()
+    
     
     
 
