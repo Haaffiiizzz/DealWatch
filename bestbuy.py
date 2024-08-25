@@ -3,10 +3,13 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 import json
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 
 def getItemData(itemLink):
-    driver = webdriver.Chrome()
-
+    chrome_options = Options()
+    chrome_options.add_argument("--headless=new")
+    driver = webdriver.Chrome(options = chrome_options)
+    
     driver.get(itemLink)
 
     soup = BeautifulSoup(driver.page_source, "html.parser")

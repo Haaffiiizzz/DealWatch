@@ -26,7 +26,7 @@ from bestbuy import getItemData
     
     
 # print(items)
-
+link = "https://www.bestbuy.ca/en-ca/product/asus-rog-swift-32-4k-ultra-hd-240hz-0-03ms-gtg-oled-led-g-sync-gaming-monitor-pg32ucdm/17728627"
 while True:
         try:
             itemData = getItemData(link)
@@ -34,4 +34,4 @@ while True:
         except Exception as e:
             print(e)
 print("Wishlist saved")
-
+print(itemData)
