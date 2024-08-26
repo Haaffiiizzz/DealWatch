@@ -27,6 +27,9 @@ def getItemData(itemLink):
     wishlist.append(Dict)
 
     return Dict
+
+def searchItem(itemName):
+    return(itemName)
     
 
 

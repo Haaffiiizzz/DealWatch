@@ -1,5 +1,5 @@
 from amazon import getWishlistData, getDataLink
-from bestbuy import getItemData
+from bestbuy import getItemData, searchItem
 
 # what = input("do you want to import a wishlist or singular item?(Answer W for Wishlist or S for SIngular item):\n")
 
@@ -26,6 +26,8 @@ from bestbuy import getItemData
     
     
 # print(items)
+
+print(search)
 link = "https://www.bestbuy.ca/en-ca/product/asus-rog-swift-32-4k-ultra-hd-240hz-0-03ms-gtg-oled-led-g-sync-gaming-monitor-pg32ucdm/17728627"
 while True:
         try:
