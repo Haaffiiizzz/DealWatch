@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 import json
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
+import requests
 
 def getItemData(itemLink):
     chrome_options = Options()
@@ -29,7 +30,8 @@ def getItemData(itemLink):
     return Dict
 
 def searchItem(itemName):
-    return(itemName)
+    search = requests.get(f"https://www.bestbuy.ca/en-ca/search?search={itemName}")
+    
     
 
 
