@@ -1,5 +1,5 @@
-from .amazonScrape import getWishlistData, getDataLink
-from .bestbuyScrape import getItemData, searchItem
+from .scrapers.amazonScrape import getWishlistData, getDataLink
+from .scrapers.bestbuyScrape import getItemData, searchItem
 from fastapi import FastAPI, APIRouter
 from .routers import amazon, bestbuy
 
