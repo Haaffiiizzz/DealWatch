@@ -6,7 +6,7 @@ router = APIRouter(prefix = "/amazon", tags= ["Amazon"])
 
 @router.get("/")
 def root():
-    print("Amazon sent.")
+    print("Amazon has been sent.")
     return "Amazon"
 
 @router.get("/wishlist/{link:path}")
@@ -19,4 +19,6 @@ def wishlist(link: str):
         except Exception as e:
             trial += 1
     return e
+    
+
         

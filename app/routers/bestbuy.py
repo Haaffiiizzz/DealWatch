@@ -4,5 +4,5 @@ router = APIRouter(prefix = "/bestbuy", tags= ["BestBuy"])
 
 @router.get("/")
 def root():
-    print("BestBuy sent.")
+    print("BestBuy has been sent.")
     return "BestBuy"
