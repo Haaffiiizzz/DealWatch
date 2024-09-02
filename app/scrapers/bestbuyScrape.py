@@ -1,8 +1,5 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
-from selenium.webdriver.common.by import By
-import json
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 import requests
 
