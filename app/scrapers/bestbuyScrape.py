@@ -27,7 +27,12 @@ def getItemData(itemLink):
     return Dict
 
 def searchItem(itemName):
-    search = requests.get(f"https://www.bestbuy.ca/en-ca/search?search={itemName}")
+    page = requests.get(f"https://www.bestbuy.ca/en-ca/search?search={itemName}")
+    
+    soup = BeautifulSoup(page.content, "html.parser")
+    print(soup)
+    
+print(searchItem("Samsung Odyssey"))
     
     
 
