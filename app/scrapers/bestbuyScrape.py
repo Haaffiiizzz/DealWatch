@@ -27,7 +27,10 @@ def getItemData(itemLink):
     return Dict
 
 def searchItem(itemName):
-    page = requests.get(f"https://www.bestbuy.ca/en-ca/search?search={itemName}")
+    headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36"
+}
+    page = requests.get(f"https://www.bestbuy.ca/en-ca/search?search={itemName}", headers=headers)
     
     soup = BeautifulSoup(page.content, "html.parser")
     print(soup)
