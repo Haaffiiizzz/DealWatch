@@ -38,12 +38,14 @@ def getWishlistData(wishlistURL):
     names = soup.find_all("h2", {"class": "a-size-base"})
     brands = soup.find_all("span", {"class": "a-size-base"})
     prices = soup.find_all("span", {"class": "a-price"})
+    images = soup.find_all("img", {"height": "135"})
+    
 
     brands = [brand.text.strip() for brand in brands if "by" in brand.text.strip().lower()]   # issue with having tags that fit filter but its not the brand name
     
     wishlist = []
 
-    for nameTag, brand, priceTag in zip(names, brands, prices):
+    for nameTag, brand, priceTag, imageSrcTag in zip(names, brands, prices, images):
         Dict = {}
         
         title = nameTag.text.strip()
@@ -53,9 +55,12 @@ def getWishlistData(wishlistURL):
         frac = priceTag.find("span", {"class": "a-price-fraction"})
         price = f"{whole.text.strip()}{frac.text.strip()}"
         
+        src = imageSrcTag.get('src')
+        
         Dict["Item"] = title
         Dict["Brand"] = brand
         Dict["Price"] = price
+        Dict["ImageSrc"] = src
         
         wishlist.append(Dict)
     
@@ -82,8 +87,5 @@ def getDataLink(itemLink):
     
     return Dict
     
-    
-    
-
 
     
