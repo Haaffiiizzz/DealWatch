@@ -14,3 +14,4 @@ def itemLink(link: str):
     # we get link by adding a query to the itemlink path
     link = unquote(link)
     return getItemData(link)
+
