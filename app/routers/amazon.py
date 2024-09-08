@@ -1,24 +1,20 @@
 from fastapi import APIRouter
 from urllib.parse import unquote
-from app.amazonScrape import getWishlistData
+from app.scrapers.amazonScrape import getWishlistData, getDataLink
 
 router = APIRouter(prefix = "/amazon", tags= ["Amazon"]) 
 
 @router.get("/")
 def root():
-    print("Amazon has been sent.")
+    print("Amazon sent.")
     return "Amazon"
 
 @router.get("/wishlist/{link:path}")
 def wishlist(link: str):
     link = unquote(link)
-    trial = 0
-    while trial < 5:
-        try:
-            return getWishlistData(link)
-        except Exception as e:
-            trial += 1
-    return e
-    
+    return getWishlistData(link)
 
-        
+@router.get("/itemlink/{link:path}")
+def itemLink(link: str):
+    link = unquote(link)
+    return getDataLink(link)

@@ -9,31 +9,10 @@ import requests
 url = 'https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share'
 
 def getWishlistData(wishlistURL):
-    """
-    Code to open  selenium headless i.e without opening the browser directly
-    """
-    chrome_options = Options()
-    chrome_options.add_argument("--headless=new")
-    driver = webdriver.Chrome(options = chrome_options)
-    driver.get(wishlistURL)
+ 
+    site = requests.get(wishlistURL)
 
-    """
-    code to ensure scrolling to end of wishlist
-        
-    """
-    last_height = driver.execute_script("return document.body.scrollHeight")
-
-    while True:
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(1)
-
-        new_height = driver.execute_script("return document.body.scrollHeight")
-        if new_height == last_height:
-            break
-        last_height = new_height
-
-
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    soup = BeautifulSoup(site.content, 'html.parser')
 
     names = soup.find_all("h2", {"class": "a-size-base"})
     brands = soup.find_all("span", {"class": "a-size-base"})
@@ -68,24 +47,32 @@ def getWishlistData(wishlistURL):
 
 def getDataLink(itemLink):
     Dict = {}
+
     chrome_options = Options()
     chrome_options.add_argument("--headless=new")
     driver = webdriver.Chrome(options = chrome_options)
     driver.get(itemLink)
-    
+
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     
     title = soup.find("span", {"id": "productTitle"}).text.strip()
+    
     whole = soup.find("span", {"class": "a-price-whole"}).text.strip()
     frac = soup.find("span", {"class": "a-price-fraction"}).text.strip()
     price = f"{whole}{frac}"
+    
     brand = " ".join(soup.find("a", {"id": "bylineInfo"}).text.strip().split()[1:])
+    
+    image = soup.find("img", {"id": "landingImage"})
+    imageSrc = image.get('src')
+    
     
     Dict["Item"] = title
     Dict["Brand"] = brand
     Dict["Price"] = price
+    Dict["ImageSrc"] = imageSrc
     
     return Dict
-    
 
+print(getDataLink('https://a.co/d/5FB4X6G'))
     
