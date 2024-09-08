@@ -1,12 +1,11 @@
 from fastapi import APIRouter
 from urllib.parse import unquote
-from app.scrapers.amazonScrape import getWishlistData, getDataLink
+from scrapers.amazonScrape import getWishlistData, getDataLink
 
 router = APIRouter(prefix = "/amazon", tags= ["Amazon"]) 
 
 @router.get("/")
 def root():
-    print("Amazon sent.")
     return "Amazon"
 
 @router.get("/wishlist/{link:path}")

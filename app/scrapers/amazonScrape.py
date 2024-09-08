@@ -6,7 +6,7 @@ import time
 from selenium.webdriver.chrome.options import Options
 import requests
 
-url = 'https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share'
+# url = 'https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share'
 
 def getWishlistData(wishlistURL):
  
@@ -74,5 +74,4 @@ def getDataLink(itemLink):
     
     return Dict
 
-print(getDataLink('https://a.co/d/5FB4X6G'))
     
