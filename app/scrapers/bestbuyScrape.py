@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-def getItemData(itemLink):
+def getItemData(itemLink: str):
     chrome_options = Options()
     chrome_options.add_argument("--headless=new")
     driver = webdriver.Chrome(options = chrome_options) #options = chrome_options

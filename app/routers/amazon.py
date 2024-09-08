@@ -8,12 +8,13 @@ router = APIRouter(prefix = "/amazon", tags= ["Amazon"])
 def root():
     return "Amazon"
 
-@router.get("/wishlist/{link:path}")
+@router.get("/wishlist")
 def wishlist(link: str):
+    # we get link by adding a query to the wishlist path
     link = unquote(link)
     return getWishlistData(link)
 
-@router.get("/itemlink/{link:path}")
+@router.get("/itemlink")
 def itemLink(link: str):
     link = unquote(link)
     return getDataLink(link)

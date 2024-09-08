@@ -8,7 +8,7 @@ import requests
 
 # url = 'https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share'
 
-def getWishlistData(wishlistURL):
+def getWishlistData(wishlistURL: str):
  
     site = requests.get(wishlistURL)
 
@@ -45,7 +45,7 @@ def getWishlistData(wishlistURL):
     
     return wishlist
 
-def getDataLink(itemLink):
+def getDataLink(itemLink: str):
     Dict = {}
 
     chrome_options = Options()
