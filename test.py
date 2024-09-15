@@ -1,2 +1,3 @@
-print(type(100))
-# i need the commit been mad busy
+import requests
+site = requests.get("https://a.co/d/5SJFOmO")
+print(site.content)

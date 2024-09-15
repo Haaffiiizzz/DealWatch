@@ -48,12 +48,13 @@ def getWishlistData(wishlistURL: str):
 def getDataLink(itemLink: str):
     Dict = {}
 
-    chrome_options = Options()
-    chrome_options.add_argument("--headless=new")
-    driver = webdriver.Chrome(options = chrome_options)
-    driver.get(itemLink)
-
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    # chrome_options = Options()
+    # chrome_options.add_argument("--headless=new")
+    # driver = webdriver.Chrome(options = chrome_options)
+    # driver.get(itemLink)
+    
+    site = requests.get(itemLink)
+    soup = BeautifulSoup(site.content, 'html.parser')
     
     title = soup.find("span", {"id": "productTitle"}).text.strip()
     
