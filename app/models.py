@@ -1,4 +1,4 @@
-from database import Base
+from .database import Base
 from sqlalchemy import Column, String, Integer, JSON, TIMESTAMP, text, Boolean
 
 # class Amazon(Base):
@@ -14,6 +14,7 @@ from sqlalchemy import Column, String, Integer, JSON, TIMESTAMP, text, Boolean
 
 class User(Base):
     __tablename__ = "users"
+    __table_args__ = {'schema': 'dealwatch'}
     id = Column(Integer, primary_key= True, nullable=False)
     email = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=False)
