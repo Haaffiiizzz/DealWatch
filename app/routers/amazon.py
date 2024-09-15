@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from urllib.parse import unquote
-from scrapers.amazonScrape import getWishlistData, getDataLink
+from ..scrapers.amazonScrape import getWishlistData, getDataLink
 
 router = APIRouter(prefix = "/amazon", tags= ["Amazon"]) 
 

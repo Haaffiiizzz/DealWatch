@@ -1,7 +1,7 @@
-from scrapers.amazonScrape import getWishlistData, getDataLink
-from scrapers.bestbuyScrape import getItemData
+from .scrapers.amazonScrape import getWishlistData, getDataLink
+from .scrapers.bestbuyScrape import getItemData
 from fastapi import FastAPI, APIRouter
-from routers import amazon, bestbuy
+from .routers import amazon, bestbuy
 
 app = FastAPI()
 router = APIRouter()

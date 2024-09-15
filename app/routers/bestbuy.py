@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from urllib.parse import unquote
-from scrapers.bestbuyScrape import getItemData
+from ..scrapers.bestbuyScrape import getItemData
 
 router = APIRouter(prefix = "/bestbuy", tags= ["BestBuy"]) 
 
