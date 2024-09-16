@@ -16,6 +16,9 @@ class User(Base):
     __tablename__ = "users"
     __table_args__ = {'schema': 'dealwatch'}
     id = Column(Integer, primary_key= True, nullable=False)
+    firstName = Column(String, nullable=False)
+    lastName = Column(String)
+    phoneNumber = Column(String)
     email = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=False)
     amazon = Column(Boolean)
