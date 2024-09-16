@@ -1,7 +1,5 @@
-from .scrapers.amazonScrape import getWishlistData, getDataLink
-from .scrapers.bestbuyScrape import getItemData
 from fastapi import FastAPI, APIRouter
-from .routers import amazon, bestbuy
+from .routers import amazon, bestbuy, users
 from .models import Base
 from .database import engine
 from sqlalchemy import MetaData
@@ -20,4 +18,5 @@ def root():
 
 app.include_router(router)
 app.include_router(amazon.router)
+app.include_router(users.router)
 app.include_router(bestbuy.router)

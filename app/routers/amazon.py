@@ -18,3 +18,4 @@ def wishlist(link: str):
 def itemLink(link: str):
     link = unquote(link)
     return getDataLink(link)
+
