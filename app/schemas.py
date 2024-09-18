@@ -28,5 +28,6 @@ class UserResponse(BaseModel):
 
 class UserLogin(BaseModel):
     email: EmailStr
+    phoneNumber: str = None
     password: str
 
