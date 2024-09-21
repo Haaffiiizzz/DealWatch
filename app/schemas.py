@@ -12,7 +12,6 @@ class CreateUser(BaseModel):
     bestbuy: bool = False
 
 class UserResponse(BaseModel):
-    id: int
     email: EmailStr
     firstName: str
     lastName: str
