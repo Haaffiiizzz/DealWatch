@@ -6,11 +6,6 @@ from sqlalchemy import Column, String, Integer, JSON, TIMESTAMP, text, Boolean
 #     UserID = Column(Integer, primary_key=True, nullable=False)
     
 
-# class BestBuy(Base):
-#     __tablename__ = "BestBuy"
-#     country = Column(String, primary_key=True, unique=True)
-#     items = Column(JSON)
-
 
 class User(Base):
     __tablename__ = "users"
