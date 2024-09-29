@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
-
+#schemas for data input and return
 class CreateUser(BaseModel):
     firstName: str
     lastName: str
