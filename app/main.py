@@ -26,7 +26,6 @@ app.add_middleware(
 
 @router.get("/")
 def root():
-    print("Hello sent.")
     return "Hello"
 
 app.include_router(router)
