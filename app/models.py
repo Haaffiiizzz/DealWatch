@@ -1,5 +1,6 @@
 from .database import Base
-from sqlalchemy import Column, String, Integer, JSON, TIMESTAMP, text, Boolean
+from sqlalchemy import Column, String, Integer, JSON, TIMESTAMP, text, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
 
 # class Amazon(Base):
 #     __tablename__ = "Amazon"
@@ -10,6 +11,7 @@ from sqlalchemy import Column, String, Integer, JSON, TIMESTAMP, text, Boolean
 class User(Base):
     __tablename__ = "users"
     __table_args__ = {'schema': 'dealwatch'}
+    
     id = Column(Integer, primary_key= True, nullable=False)
     firstName = Column(String, nullable=False)
     lastName = Column(String)
@@ -20,6 +22,19 @@ class User(Base):
     bestbuy = Column(Boolean)
     createdAt = Column(TIMESTAMP(timezone=True), nullable=False, 
                        server_default= text('now()'))
-    
+    wishlists = relationship("Amazon", back_populates="user")
 
-# here we create the model for the countries and users table to be used with the db query
+class Amazon(Base):
+    __tablename__ = "amazon"
+    __table_args__ = {'schema': 'dealwatch'}
+    
+    id = Column(Integer, primary_key=True, index=True)
+    userId = Column(Integer, ForeignKey('dealwatch.users.id'), nullable=False)
+    title = Column(String, nullable=False)
+    brand = Column(String)
+    price = Column(String)
+    imageSrc = Column(String)
+    
+    
+    user = relationship("User", back_populates="wishlists")
+
