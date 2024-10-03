@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Body, HTTPException
-from ..schemas import CreateUser
+from ..schemas import CreateUser, UserResponse
 from ..database import get_db
 from sqlalchemy.orm import Session
 from ..utils import hashPassword
@@ -25,4 +25,4 @@ def Create_User(user: CreateUser = Body(), db: Session = Depends(get_db)):
     db.commit()
     db.refresh(newUser)
 
-    return newUser
+    return UserResponse.from_orm(newUser)
