@@ -22,7 +22,9 @@ class User(Base):
     bestbuy = Column(Boolean)
     createdAt = Column(TIMESTAMP(timezone=True), nullable=False, 
                        server_default= text('now()'))
-    wishlists = relationship("Amazon", back_populates="user")
+    
+    amazonUser = relationship("Amazon", back_populates="user")
+    bestbuyUser = relationship("BestBuy", back_populates="user")   #establishing relationship
 
 class Amazon(Base):
     __tablename__ = "amazon"
@@ -35,6 +37,18 @@ class Amazon(Base):
     price = Column(String)
     imageSrc = Column(String)
     
+    user = relationship("User", back_populates="amazonUser")   #establishing relationship
     
-    user = relationship("User", back_populates="wishlists")
+class BestBuy(Base):
+    __tablename__ = "bestbuy"
+    __table_args__ = {'schema': 'dealwatch'}
+    
+    id = Column(Integer, primary_key=True, index=True)
+    userId = Column(Integer, ForeignKey('dealwatch.users.id'), nullable=False)
+    title = Column(String, nullable=False)
+    brand = Column(String)
+    price = Column(String)
+    imageSrc = Column(String)
+    
+    user = relationship("User", back_populates="bestbuyUser")      #establishing relationshipS
 
