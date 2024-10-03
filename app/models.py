@@ -31,7 +31,7 @@ class Amazon(Base):
     __table_args__ = {'schema': 'dealwatch'}
     
     id = Column(Integer, primary_key=True, index=True)
-    userId = Column(Integer, ForeignKey('dealwatch.users.id'), nullable=False)
+    userId = Column(Integer, ForeignKey('dealwatch.users.id', ondelete="CASCADE"), nullable=False)
     title = Column(String, nullable=False)
     brand = Column(String)
     price = Column(String)
