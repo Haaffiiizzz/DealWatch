@@ -23,8 +23,8 @@ class User(Base):
     createdAt = Column(TIMESTAMP(timezone=True), nullable=False, 
                        server_default= text('now()'))
     
-    amazonUser = relationship("Amazon", back_populates="user")
-    bestbuyUser = relationship("BestBuy", back_populates="user")   #establishing relationship
+    amazonUser = relationship("Amazon", back_populates="user", cascade="all, delete")
+    bestbuyUser = relationship("BestBuy", back_populates="user", cascade="all, delete")   #establishing relationship
 
 class Amazon(Base):
     __tablename__ = "amazon"
