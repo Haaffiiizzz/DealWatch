@@ -1,5 +1,5 @@
 from fastapi import FastAPI, APIRouter
-from .routers import amazon, bestbuy, users
+from .routers import amazon, bestbuy, users, auth
 from .models import Base
 from .database import engine
 from sqlalchemy import MetaData
@@ -32,3 +32,4 @@ app.include_router(router)
 app.include_router(amazon.router)
 app.include_router(users.router)
 app.include_router(bestbuy.router)
+app.include_router(auth.router)
