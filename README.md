@@ -1,1 +1,1 @@
-SHOPPING SITES SCRAPER (COMING SOON)
+E-Commerce Sites Scraper for Price Comparison, Deals and Price change tracking.
