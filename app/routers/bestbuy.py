@@ -4,7 +4,7 @@ from urllib.parse import unquote
 from ..oauth2 import getCurrentUser
 from ..database import get_db
 from sqlalchemy.orm import Session
-from ..schemas import TokenData
+from ..schemas import TokenData, LinkData
 from .. import models
 
 router = APIRouter(prefix = "/bestbuy", tags= ["BestBuy"]) 
@@ -14,10 +14,10 @@ def root():
     
     return "BestBuy"
 
-@router.get("/itemlink")
-def itemLink(link: str, currUser: TokenData = Depends(getCurrentUser), db: Session = Depends(get_db)):
+@router.post("/itemlink")
+def itemLink(link: LinkData, currUser: TokenData = Depends(getCurrentUser), db: Session = Depends(get_db)):
     # we get link by adding a query to the itemlink path
-    link = unquote(link)
+    link = link.url
     scrapedData = getItemData(link)
     
     if not scrapedData:
@@ -36,7 +36,7 @@ def itemLink(link: str, currUser: TokenData = Depends(getCurrentUser), db: Sessi
 
     db.commit() 
 
-    return {"message": "Wishlist items added successfully", "items": scrapedData}
+    return {"message": "Item added successfully", "item": scrapedData}
     # code copied from amazon router. test tomorrow to make sure it works.
     
 
