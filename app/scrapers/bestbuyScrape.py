@@ -23,14 +23,14 @@ def getItemData(itemLink: str):
     imageTag = soup.find("img", {"class":"productImage_1NbKv"})
     
 
-    wishlist = []
+    
     Dict = {}
     Dict["Item"] = nameTag.text.strip() if nameTag else None
     Dict["Brand"] = brandTag.text.strip() if brandTag else None
     Dict["Price"] = priceTag.text.strip().split("$")[1] if priceTag else None
     Dict["ImageSrc"] = imageTag.get('src') if imageTag else None
 
-    wishlist.append(Dict)
+    #returning just a dict of the item
 
     return Dict
 
