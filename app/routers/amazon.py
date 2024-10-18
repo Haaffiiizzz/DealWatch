@@ -23,7 +23,7 @@ def wishlist(link: LinkData, currUser: TokenData = Depends(getCurrentUser), db: 
         raise HTTPException(status_code=404, detail="No data found at the provided link.")
 
     for item in scrapedData:
-        title = item.get("Item")
+        title = item.get("Title")
         brand = item.get("Brand")
         price = item.get("Price")
         imageSrc = item.get("ImageSrc")
@@ -44,7 +44,24 @@ def wishlist(link: LinkData, currUser: TokenData = Depends(getCurrentUser), db: 
     
 
 @router.post("/itemlink")
-def itemLink(link: str):
-    link = unquote(link)
-    return getDataLink(link)
+def itemLink(link: LinkData, currUser: TokenData = Depends(getCurrentUser), db: Session = Depends(get_db)):
+    link = link.url
+    scrapedData = getDataLink(link)
+    
+    if not scrapedData:
+        raise HTTPException(status_code=404, detail="No data found at the provided link.")
+    
+    wishlist = models.Amazon(
+            userId=currUser.id,
+            title=scrapedData["Title"],
+            brand=scrapedData["Brand"],
+            price=scrapedData["Price"],
+            imageSrc=scrapedData["ImageSrc"]
+        )
+
+    db.add(wishlist)
+
+    db.commit() 
+
+    return {"message": "Link item added succesfully", "item": scrapedData}
 
