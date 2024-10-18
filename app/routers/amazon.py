@@ -4,7 +4,7 @@ from ..scrapers.amazonScrape import getWishlistData, getDataLink
 from ..oauth2 import getCurrentUser
 from ..database import get_db
 from sqlalchemy.orm import Session
-from ..schemas import TokenData
+from ..schemas import TokenData, LinkData
 from .. import models
 
 router = APIRouter(prefix = "/amazon", tags= ["Amazon"]) 
@@ -13,10 +13,10 @@ router = APIRouter(prefix = "/amazon", tags= ["Amazon"])
 def root(currUser: TokenData = Depends(getCurrentUser), db: Session = Depends(get_db)):
     return currUser.id
 
-@router.get("/wishlist")   #change this to post soon
-def wishlist(link: str, currUser: TokenData = Depends(getCurrentUser), db: Session = Depends(get_db)):
+@router.post("/wishlist")   #change this to post soon
+def wishlist(link: LinkData, currUser: TokenData = Depends(getCurrentUser), db: Session = Depends(get_db)):
     # we get link by adding a query to the wishlist path
-    link = unquote(link)
+    link = link.url
     scrapedData = getWishlistData(link)
     
     if not scrapedData:
@@ -43,7 +43,7 @@ def wishlist(link: str, currUser: TokenData = Depends(getCurrentUser), db: Sessi
     return {"message": "Wishlist items added successfully", "items": scrapedData}
     
 
-@router.get("/itemlink")
+@router.post("/itemlink")
 def itemLink(link: str):
     link = unquote(link)
     return getDataLink(link)
