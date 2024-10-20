@@ -16,7 +16,7 @@ def root():
 
 @router.post("/itemlink")
 def itemLink(link: LinkData, currUser: TokenData = Depends(getCurrentUser), db: Session = Depends(get_db)):
-    # we get link by adding a query to the itemlink path
+    
     link = link.url
     scrapedData = getItemData(link)
     
@@ -37,6 +37,6 @@ def itemLink(link: LinkData, currUser: TokenData = Depends(getCurrentUser), db: 
     db.commit() 
 
     return {"message": "Item added successfully", "item": scrapedData}
-    # code copied from amazon router. test tomorrow to make sure it works.
+    
     
 
