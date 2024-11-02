@@ -75,12 +75,26 @@ def getDataLink(itemLink: str):
     image = soup.find("img", {"id": "landingImage"})
     imageSrc = image.get('src')
     
+    ratingsTag = soup.find("span", {"id": "acrCustomerReviewText"})
+
+    if ratingsTag:
+        
+        numRatings = ratingsTag.text # we get something 767 ratings
+        numRatings = numRatings.split(" ")[0]
+    else:
+        numRatings = None
+    
+    rating = soup.find("span", {"id": "acrPopover"})
+    rating = rating.text.strip() if rating else None
+    rating = rating.split()[0]
+    
     
     Dict["Title"] = title
     Dict["Brand"] = brand
     Dict["Price"] = price
     Dict["ImageSrc"] = imageSrc
-    
+    Dict["numRatings"] = numRatings
+    Dict["rating"] = rating
     return Dict
 
-
+print(getDataLink("https://a.co/d/8XDgttZ"))
