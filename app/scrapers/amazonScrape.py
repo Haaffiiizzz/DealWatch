@@ -1,9 +1,7 @@
 #comment
 
 from bs4 import BeautifulSoup
-from selenium import webdriver
-import time
-from selenium.webdriver.chrome.options import Options
+import re
 import requests
 
 # url = 'https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share'
@@ -18,13 +16,15 @@ def getWishlistData(wishlistURL: str):
     brands = soup.find_all("span", {"class": "a-size-base"})
     prices = soup.find_all("span", {"class": "a-price"})
     images = soup.find_all("img", {"height": "135"})
+    ratings = soup.find_all(id=re.compile(r'^review_stars_'))
+    numRatings = soup.find_all(id=re.compile(r'^review_count_'))
     
 
     brands = [brand.text.strip() for brand in brands if "by" in brand.text.strip().lower()]   # issue with having tags that fit filter but its not the brand name
     
     wishlist = []
 
-    for nameTag, brand, priceTag, imageSrcTag in zip(names, brands, prices, images):
+    for nameTag, brand, priceTag, imageSrcTag, rating, numRating in zip(names, brands, prices, images, ratings, numRatings):
         Dict = {}
         
         title = nameTag.text.strip()
@@ -35,12 +35,16 @@ def getWishlistData(wishlistURL: str):
         price = f"{whole.text.strip()}{frac.text.strip()}"
         
         src = imageSrcTag.get('src')
+        numRating = numRating.text.strip()
+        rating = rating.text.split(" ")[0]
         
         Dict["Title"] = title
         Dict["Brand"] = brand
         Dict["Price"] = price
         Dict["ImageSrc"] = src
-        
+        Dict["numRating"] = numRating
+        Dict["rating"] = rating
+    
         wishlist.append(Dict)
     
     return wishlist
@@ -97,4 +101,5 @@ def getDataLink(itemLink: str):
     Dict["rating"] = rating
     return Dict
 
-print(getDataLink("https://a.co/d/8XDgttZ"))
+# print(getDataLink("https://a.co/d/8XDgttZ"))
+print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share"))
