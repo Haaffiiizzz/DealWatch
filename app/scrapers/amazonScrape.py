@@ -101,5 +101,5 @@ def getDataLink(itemLink: str):
     Dict["rating"] = rating
     return Dict
 
-# print(getDataLink("https://a.co/d/8XDgttZ"))
-print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share"))
+print(getDataLink("https://a.co/d/8XDgttZ"))
+# print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share"))
