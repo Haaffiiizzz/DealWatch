@@ -1,6 +1,7 @@
-from selenium import webdriver
+
 from bs4 import BeautifulSoup
 import requests
+import re
 
 
 def getItemData(itemLink: str):
@@ -16,7 +17,8 @@ def getItemData(itemLink: str):
     brandTag = soup.find("a", {"data-automation": "pdp-brandname-link"})
     priceTag = soup.find("span", {"data-automation": "product-price"})
     imageTag = soup.find("img", {"class":"productImage_1NbKv"})
-    
+    ratingsTag = soup.find(class_=re.compile(r'^style-module_ratings'))
+    numRatingsTag = soup.find("span", {"data-automation": "rating-count"})
 
     
     Dict = {}
@@ -24,8 +26,12 @@ def getItemData(itemLink: str):
     Dict["Brand"] = brandTag.text.strip() if brandTag else None
     Dict["Price"] = priceTag.text.strip().split("$")[1] if priceTag else None
     Dict["ImageSrc"] = imageTag.get('src') if imageTag else None
+    Dict["Rating"] = ratingsTag.text.strip() if ratingsTag else None
+    Dict["NumRating"] = numRatingsTag.text.strip("()").split(" ")[0] if numRatingsTag else None
 
     #returning just a dict of the item
 
     return Dict
 
+link = "https://www.bestbuy.ca/en-ca/product/lenovo-tab-m11-11-128gb-android-13-tablet-with-mediatek-helio-g88-8-core-processor-luna-grey/17744705"
+print(getItemData(link))
