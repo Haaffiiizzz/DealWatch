@@ -26,8 +26,8 @@ def getItemData(itemLink: str):
     Dict["Brand"] = brandTag.text.strip() if brandTag else None
     Dict["Price"] = priceTag.text.strip().split("$")[1] if priceTag else None
     Dict["ImageSrc"] = imageTag.get('src') if imageTag else None
-    Dict["Rating"] = ratingsTag.text.strip() if ratingsTag else None
-    Dict["NumRating"] = numRatingsTag.text.strip("()").split(" ")[0] if numRatingsTag else None
+    Dict["rating"] = ratingsTag.text.strip() if ratingsTag else None
+    Dict["numRatings"] = numRatingsTag.text.strip("()").split(" ")[0] if numRatingsTag else None
 
     #returning just a dict of the item
 

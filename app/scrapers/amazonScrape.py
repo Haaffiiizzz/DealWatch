@@ -42,7 +42,7 @@ def getWishlistData(wishlistURL: str):
         Dict["Brand"] = brand
         Dict["Price"] = price
         Dict["ImageSrc"] = src
-        Dict["numRating"] = numRating
+        Dict["numRatings"] = numRating
         Dict["rating"] = rating
     
         wishlist.append(Dict)
@@ -101,5 +101,3 @@ def getDataLink(itemLink: str):
     Dict["rating"] = rating
     return Dict
 
-print(getDataLink("https://a.co/d/8XDgttZ"))
-# print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share"))

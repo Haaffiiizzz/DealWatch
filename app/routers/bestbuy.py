@@ -29,7 +29,9 @@ def itemLink(link: LinkData, currUser: TokenData = Depends(getCurrentUser), db: 
         title=scrapedData.get("Item"),
         brand=scrapedData.get("Brand"),
         price=scrapedData.get("Price"),
-        imageSrc=scrapedData.get("ImageSrc")
+        imageSrc=scrapedData.get("ImageSrc"),
+        numRatings = scrapedData.get("numRatings"),
+        rating = scrapedData.get("rating")
     )
 
     db.add(wishlist)

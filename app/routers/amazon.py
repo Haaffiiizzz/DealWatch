@@ -27,13 +27,17 @@ def wishlist(link: LinkData, currUser: TokenData = Depends(getCurrentUser), db: 
         brand = item.get("Brand")
         price = item.get("Price")
         imageSrc = item.get("ImageSrc")
+        numRatings = item.get("numRatings")
+        rating = item.get("rating")
 
         wishlist = models.Amazon(
             userId=currUser.id,
             title=title,
             brand=brand,
             price=price,
-            imageSrc=imageSrc
+            imageSrc=imageSrc,
+            numRatings=numRatings,
+            rating=rating
         )
 
         db.add(wishlist)
@@ -56,7 +60,10 @@ def itemLink(link: LinkData, currUser: TokenData = Depends(getCurrentUser), db: 
             title=scrapedData["Title"],
             brand=scrapedData["Brand"],
             price=scrapedData["Price"],
-            imageSrc=scrapedData["ImageSrc"]
+            imageSrc=scrapedData["ImageSrc"],
+            numRatings=scrapedData["numRatings"],
+            rating=scrapedData["rating"]
+            
         )
 
     db.add(wishlist)

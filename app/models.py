@@ -36,6 +36,8 @@ class Amazon(Base):
     brand = Column(String)
     price = Column(String)
     imageSrc = Column(String)
+    rating = Column(String)
+    numRatings = Column(String)
     
     user = relationship("User", back_populates="amazonUser")   #establishing relationship
     
@@ -49,6 +51,8 @@ class BestBuy(Base):
     brand = Column(String)
     price = Column(String)
     imageSrc = Column(String)
+    rating = Column(String)
+    numRatings = Column(String)
     
     user = relationship("User", back_populates="bestbuyUser")      #establishing relationshipS
 
