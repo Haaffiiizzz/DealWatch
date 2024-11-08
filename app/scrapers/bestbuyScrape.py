@@ -33,5 +33,3 @@ def getItemData(itemLink: str):
 
     return Dict
 
-link = "https://www.bestbuy.ca/en-ca/product/lenovo-tab-m11-11-128gb-android-13-tablet-with-mediatek-helio-g88-8-core-processor-luna-grey/17744705"
-print(getItemData(link))
