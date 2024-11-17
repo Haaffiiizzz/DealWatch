@@ -1,2 +1,13 @@
-This is an API that can extract data about an item or a wishlist of items (Amazon only) from Amazon and BestBuy. This data is stored in a postgres database.
-FOr now, I have come to the completion of this, and have been able to improve my WEb SCraping, API development and Database skills. With more knowlegde of frontend in the future, I might come back to this and build a fullstack project that! 
+Skills/Technologies Utilized:
+FastAPI
+Requests
+Selenium
+Postgres
+SQL Alchemy
+RestFul API
+WebScraping
+POstMan
+
+I have created an web scraping API to scrape Bestbuy and Amazon given a link to an item or a wishlist (Amazon only). I set up a connection to a postgres database to store this data. I also set up user authentication. However, I took off the database connection for now.
+
+I am currenlty done with this for now and this is a standalone project that has enhanced my webscraping and API development skills. Once I learn enougbh to be able to create a website, I will use this API and add more features for  a compolet Shoping Site Scraper.
