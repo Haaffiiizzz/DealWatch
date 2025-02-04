@@ -101,3 +101,52 @@ def getDataLink(itemLink: str):
     Dict["rating"] = rating
     return Dict
 
+def getDataSearch(search: str):
+    Dict = {}
+    search = search.replace(" ", "+")
+    url = f"https://www.amazon.ca/s?k={search}&ref=nb_sb_noss_2"
+    headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.5",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "Upgrade-Insecure-Requests": "1",
+    "Cache-Control": "max-age=0"
+}
+    
+    site = requests.get(url, headers=headers)
+    soup = BeautifulSoup(site.content, 'html.parser')
+    
+    # title = soup.find("span", {"class": "a-size-base-plus"}).text.strip()
+    
+    # whole = soup.find("span", {"class": "a-price-whole"}).text.strip()
+    # frac = soup.find("span", {"class": "a-price-fraction"}).text.strip()
+    # price = f"{whole}{frac}"
+    
+    # brand = " ".join(soup.find("a", {"id": "bylineInfo"}).text.strip().split()[1:])
+    
+    # image = soup.find("img", {"id": "landingImage"})
+    # imageSrc = image.get('src')
+    
+    # ratingsTag = soup.find("span", {"id": "acrCustomerReviewText"})
+
+    # if ratingsTag:
+        
+    #     numRatings = ratingsTag.text # we get something 767 ratings
+    #     numRatings = numRatings.split(" ")[0]
+    # else:
+    #     numRatings = None
+    
+    # rating = soup.find("span", {"id": "acrPopover"})
+    # rating = rating.text.strip() if rating else None
+    # rating = rating.split()[0]
+    
+    
+    # Dict["Title"] = title
+    # Dict["Brand"] = brand
+    # Dict["Price"] = price
+    # Dict["ImageSrc"] = imageSrc
+    # Dict["numRatings"] = numRatings
+    # Dict["rating"] = rating
+    # return Dict

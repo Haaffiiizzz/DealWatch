@@ -23,21 +23,6 @@ def itemLink(link: LinkData): #, currUser: TokenData = Depends(getCurrentUser), 
     if not scrapedData:
         raise HTTPException(status_code=404, detail="No data found at the provided link.")
 
-
-    # wishlist = models.BestBuy(
-    #     userId=currUser.id,
-    #     title=scrapedData.get("Item"),
-    #     brand=scrapedData.get("Brand"),
-    #     price=scrapedData.get("Price"),
-    #     imageSrc=scrapedData.get("ImageSrc"),
-    #     numRatings = scrapedData.get("numRatings"),
-    #     rating = scrapedData.get("rating")
-    # )
-
-    # db.add(wishlist)
-
-    # db.commit() 
-
     return scrapedData
     
     
