@@ -5,10 +5,20 @@ import re
 import requests
 
 # url = 'https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share'
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+    'Connection': 'keep-alive',
+    'Referer': 'https://www.google.com/',
+    'DNT': '1',
+    'Upgrade-Insecure-Requests': '1',
+}
 
 def getWishlistData(wishlistURL: str):
  
-    site = requests.get(wishlistURL)
+    site = requests.get(wishlistURL, headers=HEADERS)
 
     soup = BeautifulSoup(site.content, 'html.parser')
 
@@ -52,20 +62,8 @@ def getWishlistData(wishlistURL: str):
 def getDataLink(itemLink: str):
     Dict = {}
 
-    # chrome_options = Options()
-    # chrome_options.add_argument("--headless=new")
-    # driver = webdriver.Chrome(options = chrome_options)
-    # driver.get(itemLink)
-    headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.5",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Connection": "keep-alive",
-    "Upgrade-Insecure-Requests": "1",
-    "Cache-Control": "max-age=0"
-}
-    site = requests.get(itemLink, headers=headers)
+   
+    site = requests.get(itemLink, headers=HEADERS)
     soup = BeautifulSoup(site.content, 'html.parser')
     
     title = soup.find("span", {"id": "productTitle"}).text.strip()
@@ -102,51 +100,50 @@ def getDataLink(itemLink: str):
     return Dict
 
 def getDataSearch(search: str):
-    Dict = {}
+    """This function will return a list of dictionaries containing the data of the first 5 items of the search
+    and we can look to see which best matches the search term.
+    """
+    results = []
     search = search.replace(" ", "+")
-    url = f"https://www.amazon.ca/s?k={search}&ref=nb_sb_noss_2"
-    headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.5",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Connection": "keep-alive",
-    "Upgrade-Insecure-Requests": "1",
-    "Cache-Control": "max-age=0"
-}
+    url = f"https://www.amazon.ca/s?k={search}"
     
-    site = requests.get(url, headers=headers)
+    site = requests.get(url, headers=HEADERS)
     soup = BeautifulSoup(site.content, 'html.parser')
     
-    # title = soup.find("span", {"class": "a-size-base-plus"}).text.strip()
     
-    # whole = soup.find("span", {"class": "a-price-whole"}).text.strip()
-    # frac = soup.find("span", {"class": "a-price-fraction"}).text.strip()
-    # price = f"{whole}{frac}"
+    eachItem = soup.find_all("div", {"role": "listitem"})
+    top5 = eachItem[4:9]
+    print(top5)
     
-    # brand = " ".join(soup.find("a", {"id": "bylineInfo"}).text.strip().split()[1:])
-    
-    # image = soup.find("img", {"id": "landingImage"})
-    # imageSrc = image.get('src')
-    
-    # ratingsTag = soup.find("span", {"id": "acrCustomerReviewText"})
-
-    # if ratingsTag:
+    for item in top5:
+        Dict = {}
+        titleBrand= item.find("div", {"data-cy": "title-recipe"})
+        title = titleBrand.find("h2", {"class":"a-size-base-plus a-spacing-none a-color-base a-text-normal"}).text.strip()
+        brand = titleBrand.find("div", {"class": "a-row a-color-secondary"})
+        brand = brand.text.strip() if brand else None
         
-    #     numRatings = ratingsTag.text # we get something 767 ratings
-    #     numRatings = numRatings.split(" ")[0]
-    # else:
-    #     numRatings = None
+        reviewsBlock = item.find("div", {"data-cy": "reviews-block"})
+        rating = reviewsBlock.find("i", {"data-cy": "reviews-ratings-slot"}).text.strip()
+        rating = rating.split(" ")[0]
+        numRatings = reviewsBlock.find("span", {"class": "a-size-base s-underline-text"}).text.strip()
+        
+        price = item.find("span", {"class": "a-price"}).text.strip()
+        price = price.split("$")[1]
+        
+        imageSrc = item.find("img", {"class": "s-image"})
+        imageSrc = imageSrc.get('src')
+        
+        Dict["Brand"] = brand
+        Dict["Title"] = title
+        Dict["rating"] = rating
+        Dict["numRatings"] = numRatings
+        Dict["Price"] = price
+        Dict["ImageSrc"] = imageSrc
+        
+        results.append(Dict)
     
-    # rating = soup.find("span", {"id": "acrPopover"})
-    # rating = rating.text.strip() if rating else None
-    # rating = rating.split()[0]
+    return results
     
     
-    # Dict["Title"] = title
-    # Dict["Brand"] = brand
-    # Dict["Price"] = price
-    # Dict["ImageSrc"] = imageSrc
-    # Dict["numRatings"] = numRatings
-    # Dict["rating"] = rating
-    # return Dict
+for item in getDataSearch("laptop cpu fan"):
+    print(item, "\n")
