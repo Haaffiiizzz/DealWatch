@@ -144,6 +144,6 @@ def getDataSearch(search: str):
     
     return results
     
-    
+# print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share"))   
 for item in getDataSearch("laptop cpu fan"):
     print(item, "\n")
