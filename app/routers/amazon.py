@@ -1,10 +1,6 @@
-from fastapi import APIRouter, HTTPException  #Depends, 
+from fastapi import APIRouter, HTTPException
 from ..scrapers.amazonScrape import getWishlistData, getDataLink
-# from ..oauth2 import getCurrentUser
-# from ..database import get_db
-# from sqlalchemy.orm import Session
-from ..schemas import LinkData #TokenData
-# from .. import models
+from ..schemas import LinkData
 
 router = APIRouter(prefix = "/amazon", tags= ["Amazon"]) 
 
@@ -12,9 +8,8 @@ router = APIRouter(prefix = "/amazon", tags= ["Amazon"])
 def root():
     return "Welcome"
 
-@router.get("/wishlist")   #change this to post soon
+@router.get("/wishlist")
 def wishlist(link: LinkData):
-    # we get link by adding a query to the wishlist path
     link = link.url
     scrapedData = getWishlistData(link)
     
