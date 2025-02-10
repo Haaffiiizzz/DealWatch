@@ -20,6 +20,12 @@ HEADERS = {
     'Upgrade-Insecure-Requests': '1',
 }
 
+options = ChromeOptions()
+options.add_argument("--headless=new")
+options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+
+DRIVER = webdriver.Chrome(options=options)
+
 
 def getItemData(itemLink: str):
     """Here data for a single item is scraped using the items link.
@@ -27,14 +33,10 @@ def getItemData(itemLink: str):
     So I am using selenium instead on headless mode.
     """
     
-    options = ChromeOptions()
-    options.add_argument("--headless=new")
-    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-
-    driver = webdriver.Chrome(options=options)
-    driver.get(itemLink)
+   
+    DRIVER.get(itemLink)
     
-    soup = BeautifulSoup(driver.page_source, "html.parser")
+    soup = BeautifulSoup(DRIVER.page_source, "html.parser")
     
        
     nameTag = soup.find("h1", {"class": "font-best-buy text-body-lg font-medium sm:text-title-sm"})
@@ -61,19 +63,38 @@ def getSearchData(searchTerm: str):
     """This function will return a list of dictionaries containing the data of the first 5 items of the search
     and we can look to see which best matches the search term.
     """
+    resultsList = []
     searchTerm = searchTerm.replace(" ", "+")
-    page = requests.get(f"https://www.bestbuy.ca/en-ca/search?search={searchTerm}", headers=HEADERS)
+    searchLink = f"https://www.bestbuy.ca/en-ca/search?search={searchTerm}"
+ 
+    DRIVER.get(searchLink)
     
-    soup = BeautifulSoup(page.content, 'html.parser')
+    soup = BeautifulSoup(DRIVER.page_source, "html.parser")
     results = soup.find("div", {"aria-label": "Results"})
     items = results.find_all("li")[:5]
+    
     for item in items:
-        print(item.text)
+        Dict = {}
+        
+        nameTag = item.find("h3", {"itemprop": "name"})
+        priceTag = item.find("span", {"data-automation": "product-price"})
+        imageTag = item.find("img")
+        ratingTag = item.find("meta", {"itemprop": "ratingValue"})
+        numRatingsTag = item.find("meta", {"itemprop": "reviewCount"})
+        
+        Dict["Item"] = nameTag.text.strip() if nameTag else None
+        Dict["Price"] = priceTag.text.strip().split("$")[1] if priceTag else None
+        Dict["ImageSrc"] = imageTag.get('src') if imageTag else None
+        Dict["rating"] = ratingTag.get('content') if ratingTag else None
+        Dict["numRatings"] = numRatingsTag.get('content') if numRatingsTag else None
+        
+        resultsList.append(Dict)
     
     
     
-    return True
+    return resultsList
 
 
 # print(getItemData("https://www.bestbuy.ca/en-ca/product/razer-basilisk-v3-x-hyperspeed-18000-dpi-wireless-optical-gaming-mouse-classic-black/16932767?icmp=Recos_4across_y_mght_ls_lk"))
-print(getSearchData("razer basilisk v3 x hyperspeed"))
+print(getSearchData("razer barrACUDA X"))
+DRIVER.quit()
