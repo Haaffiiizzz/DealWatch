@@ -1,13 +1,7 @@
 from fastapi import FastAPI, APIRouter
-from .routers import amazon, bestbuy #, users, auth
-# from .models import Base
-# from .database import engine
-# from sqlalchemy import MetaData
+from .routers import amazon, bestbuy 
 from fastapi.middleware.cors import CORSMiddleware
 
-# metadata = MetaData()
-
-# Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 router = APIRouter()
@@ -30,6 +24,5 @@ def root():
 
 app.include_router(router)
 app.include_router(amazon.router)
-# app.include_router(users.router)
 app.include_router(bestbuy.router)
-# app.include_router(auth.router)
+

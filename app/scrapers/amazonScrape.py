@@ -99,7 +99,7 @@ def getDataLink(itemLink: str):
     Dict["rating"] = rating
     return Dict
 
-def getDataSearch(search: str):
+def getSearchData(search: str):
     """This function will return a list of dictionaries containing the data of the first 5 items of the search
     and we can look to see which best matches the search term.
     """
@@ -144,6 +144,6 @@ def getDataSearch(search: str):
     
     return results
     
-# print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share"))   
-for item in getDataSearch("laptop cpu fan"):
-    print(item, "\n")
+# # print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share"))   
+# for item in getSearchData("laptop cpu fan"):
+#     print(item, "\n")
