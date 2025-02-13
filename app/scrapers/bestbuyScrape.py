@@ -4,7 +4,7 @@ import re
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager 
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
@@ -22,6 +22,7 @@ options.add_argument("--headless=new")
 options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
 DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+DRIVER.get("https://google.com/")
 
 
 def getItemData(itemLink: str):
@@ -29,13 +30,17 @@ def getItemData(itemLink: str):
     Requests cant be used here as the data (price specifically) is loaded dynamically using javascript.
     So I am using selenium instead on headless mode.
     """
-    
-   
+    # options = ChromeOptions()
+    # options.add_argument("--headless=new")
+    # options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+
+    # DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     DRIVER.get(itemLink)
     
     soup = BeautifulSoup(DRIVER.page_source, "html.parser")
     
-       
+    DRIVER.quit()
+    
     nameTag = soup.find("h1", {"class": "font-best-buy text-body-lg font-medium sm:text-title-sm"})
     brandTag = soup.find("a", {"data-automation": "pdp-brandname-link"})
     priceDiv = soup.find("div", {"data-automation": "product-pricing"})
@@ -63,10 +68,17 @@ def getSearchData(searchTerm: str):
     resultsList = []
     searchTerm = searchTerm.replace(" ", "+")
     searchLink = f"https://www.bestbuy.ca/en-ca/search?search={searchTerm}"
- 
+    
+    # options = ChromeOptions()
+    # options.add_argument("--headless=new")
+    # options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+
+    # DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     DRIVER.get(searchLink)
     
     soup = BeautifulSoup(DRIVER.page_source, "html.parser")
+    
+    DRIVER.quit()
     results = soup.find("div", {"aria-label": "Results"})
     items = results.find_all("li")[:5]
     

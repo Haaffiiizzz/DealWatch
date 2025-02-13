@@ -113,7 +113,6 @@ def getSearchData(search: str):
     
     eachItem = soup.find_all("div", {"role": "listitem"})
     top5 = eachItem[4:9]
-    print(top5)
     
     for item in top5:
         Dict = {}
@@ -127,8 +126,9 @@ def getSearchData(search: str):
         rating = rating.split(" ")[0]
         numRatings = reviewsBlock.find("span", {"class": "a-size-base s-underline-text"}).text.strip()
         
-        price = item.find("span", {"class": "a-price"}).text.strip()
-        price = price.split("$")[1]
+        price = item.find("span", {"class": "a-price"})
+        price = price.text.strip() if price else None
+        price = price.split("$")[1] if price else None
         
         imageSrc = item.find("img", {"class": "s-image"})
         imageSrc = imageSrc.get('src')
@@ -145,5 +145,5 @@ def getSearchData(search: str):
     return results
     
 # # print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share"))   
-# for item in getSearchData("laptop cpu fan"):
+# for item in getSearchData("razer barracuda x"):
 #     print(item, "\n")
