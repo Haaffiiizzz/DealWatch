@@ -17,12 +17,12 @@ HEADERS = {
     'Upgrade-Insecure-Requests': '1',
 }
 
-options = ChromeOptions()
-options.add_argument("--headless=new")
-options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+# options = ChromeOptions()
+# options.add_argument("--headless=new")
+# options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
-DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-DRIVER.get("https://google.com/")
+# DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+# DRIVER.get("https://google.com/")
 
 
 def getItemData(itemLink: str):
@@ -30,11 +30,11 @@ def getItemData(itemLink: str):
     Requests cant be used here as the data (price specifically) is loaded dynamically using javascript.
     So I am using selenium instead on headless mode.
     """
-    # options = ChromeOptions()
-    # options.add_argument("--headless=new")
-    # options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+    options = ChromeOptions()
+    options.add_argument("--headless=new")
+    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
-    # DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     DRIVER.get(itemLink)
     
     soup = BeautifulSoup(DRIVER.page_source, "html.parser")
@@ -69,17 +69,19 @@ def getSearchData(searchTerm: str):
     searchTerm = searchTerm.replace(" ", "+")
     searchLink = f"https://www.bestbuy.ca/en-ca/search?search={searchTerm}"
     
-    # options = ChromeOptions()
+    options = ChromeOptions()
     # options.add_argument("--headless=new")
-    # options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
-    # DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     DRIVER.get(searchLink)
     
     soup = BeautifulSoup(DRIVER.page_source, "html.parser")
     
     DRIVER.quit()
     results = soup.find("div", {"aria-label": "Results"})
+    if not results:
+        raise Exception("No results found")
     items = results.find_all("li")[:5]
     
     for item in items:
@@ -105,5 +107,5 @@ def getSearchData(searchTerm: str):
 
 
 # # print(getItemData("https://www.bestbuy.ca/en-ca/product/razer-basilisk-v3-x-hyperspeed-18000-dpi-wireless-optical-gaming-mouse-classic-black/16932767?icmp=Recos_4across_y_mght_ls_lk"))
-# print(getSearchData("razer barrACUDA X"))
-DRIVER.quit()
+print(getSearchData("27-32 inch 4K gaming monitor 144Hz G-Sync FreeSync HDR"))
+# DRIVER.quit()
