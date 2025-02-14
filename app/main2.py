@@ -3,7 +3,11 @@ import time
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
+import json
 load_dotenv()
+
+#Note: need to fix error handling in getSearches function.
+# incase of not finding a search result
 
 def getSearches(searchTerm: str):
     """
@@ -69,34 +73,47 @@ def userPromptSimilarity(amazonData, bestBuyData):
     """
     return True
 
+def get_embedding(text):
+    """Generate an embedding vector using OpenAI's GPT model."""
+    GPT_API_KEY = os.getenv('GPT_API_KEY')
+    client = OpenAI(api_key = GPT_API_KEY)
+    response = client.embeddings.create(
+        input=text,
+        model="text-embedding-ada-002"
+    )
+    return response.data[0].embedding
+
 
 def main():
     description = "I'm looking for a 4K gaming monitor with at least a 144Hz refresh rate,\
     low response time, and adaptive sync support (G-Sync or FreeSync). Preferably 27 to 32 inches, \
     with good color accuracy and HDR support."
-    userSearch = "4K gaming monitor"
-    searchTerm = generateSearchTerm(userSearch, description)
+    # userSearch = "4K gaming monitor"
+    # searchTerm = generateSearchTerm(userSearch, description)
         
-    print(searchTerm)
-    amazon, bestbuy = getSearches(searchTerm)
-    if amazon.__class__ == Exception:
-        print("Couldn't get Amazon Data. Error:", amazon)
+    # print(searchTerm)
+    # amazon, bestbuy = getSearches(searchTerm)
+    # if amazon.__class__ == Exception:
+    #     print("Couldn't get Amazon Data. Error:", amazon)
 
-    if bestbuy.__class__ == Exception:
-        print("Couldn't get BestBuy Data. Error:", bestbuy)
+    # if bestbuy.__class__ == Exception:
+    #     print("Couldn't get BestBuy Data. Error:", bestbuy)
 
-    else:
+    # else:
         
-        print("Amazon Data:")
-        for item in amazon:
-            print(item)
-            print()
+    #     print("Amazon Data:")
+    #     for item in amazon:
+    #         print(item)
+    #         print()
             
-        print("BestBuy Data:")
-        print(bestbuy)
-        for item in bestbuy:
-            print(item)
-            print()
+    #     print("BestBuy Data:")
+    #     print(bestbuy)
+    #     for item in bestbuy:
+    #         print(item)
+    #         print()
+    
+    with open("testembed.json", "w") as f:
+        json.dump(get_embedding("razer barracuda x"), f, indent=4)
     
             
 if __name__ == "__main__":
