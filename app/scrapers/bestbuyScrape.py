@@ -70,7 +70,7 @@ def getSearchData(searchTerm: str):
     searchLink = f"https://www.bestbuy.ca/en-ca/search?search={searchTerm}"
     
     options = ChromeOptions()
-    # options.add_argument("--headless=new")
+    options.add_argument("--headless=new")
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
     DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)

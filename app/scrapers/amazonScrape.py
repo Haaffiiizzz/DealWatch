@@ -122,9 +122,9 @@ def getSearchData(search: str):
         brand = brand.text.strip() if brand else None
         
         reviewsBlock = item.find("div", {"data-cy": "reviews-block"})
-        rating = reviewsBlock.find("i", {"data-cy": "reviews-ratings-slot"}).text.strip()
-        rating = rating.split(" ")[0]
-        numRatings = reviewsBlock.find("span", {"class": "a-size-base s-underline-text"}).text.strip()
+        rating = reviewsBlock.find("i", {"data-cy": "reviews-ratings-slot"}).text.strip() if reviewsBlock else None
+        rating = rating.split(" ")[0] if rating else None
+        numRatings = reviewsBlock.find("span", {"class": "a-size-base s-underline-text"}).text.strip() if reviewsBlock else None
         
         price = item.find("span", {"class": "a-price"})
         price = price.text.strip() if price else None
@@ -144,6 +144,7 @@ def getSearchData(search: str):
     
     return results
     
-# # print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share"))   
+# print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share")) 
+# getSearchData("32 inch 4K gaming monitor 144Hz G-Sync FreeSync HDR low response time")
 # for item in getSearchData("razer barracuda x"):
 #     print(item, "\n")
