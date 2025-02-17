@@ -1,6 +1,6 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from app.main2 import generateSearchTerm, getAmazonSearch, getBestBuySearch
+from app.main2 import generateSearchTerm, getAmazonSearch, getBestBuySearch, userPromptSimilarity
 
 
 app = FastAPI()
@@ -30,6 +30,7 @@ def compareSearchTerm(userSearch: str, description: str = None):
         
      
     amazon, bestbuy = getAmazonSearch(searchTerm), getBestBuySearch(searchTerm)
+    print(amazon, "AMAZON")
     retries = 3
     
     if not amazon:
@@ -50,10 +51,12 @@ def compareSearchTerm(userSearch: str, description: str = None):
     
     data["amazon"] = amazon
         
-  
     data["bestbuy"] = bestbuy
+    print(data)
+
+    return userPromptSimilarity(amazon, bestbuy, description, userSearch)
     
-    return data
+    
 	
 
 app.include_router(router)
