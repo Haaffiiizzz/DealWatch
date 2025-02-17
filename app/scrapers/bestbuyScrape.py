@@ -5,6 +5,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
@@ -16,6 +19,7 @@ HEADERS = {
     'DNT': '1',
     'Upgrade-Insecure-Requests': '1',
 }
+
 
 # options = ChromeOptions()
 # options.add_argument("--headless=new")
@@ -70,15 +74,21 @@ def getSearchData(searchTerm: str):
     searchLink = f"https://www.bestbuy.ca/en-ca/search?search={searchTerm}"
     
     options = ChromeOptions()
-    options.add_argument("--headless=new")
+    # options.add_argument("--headless=new")
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
     DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     DRIVER.get(searchLink)
     
-    soup = BeautifulSoup(DRIVER.page_source, "html.parser")
     
-    DRIVER.quit()
+    try:
+        results = WebDriverWait(DRIVER, 5).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div[aria-label='Results']"))
+        )
+    finally:
+        soup = BeautifulSoup(DRIVER.page_source, "html.parser")
+        DRIVER.quit()
+    
     results = soup.find("div", {"aria-label": "Results"})
     if not results:
         raise Exception("No results found")
@@ -107,5 +117,5 @@ def getSearchData(searchTerm: str):
 
 
 # # print(getItemData("https://www.bestbuy.ca/en-ca/product/razer-basilisk-v3-x-hyperspeed-18000-dpi-wireless-optical-gaming-mouse-classic-black/16932767?icmp=Recos_4across_y_mght_ls_lk"))
-# print(getSearchData("Razer wireless gaming headphones low latency good battery life"))
+# print(getSearchData("Razer wireless gaming headphones low latency long battery life"))
 # DRIVER.quit()

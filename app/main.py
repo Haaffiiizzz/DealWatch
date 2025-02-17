@@ -1,6 +1,6 @@
 from fastapi import FastAPI, APIRouter
-from .routers import amazon, bestbuy 
 from fastapi.middleware.cors import CORSMiddleware
+from app.main2 import generateSearchTerm, getAmazonSearch, getBestBuySearch
 
 
 app = FastAPI()
@@ -22,7 +22,40 @@ app.add_middleware(
 def root():
     return "Hello"
 
+@router.get("/searchterm")
+def compareSearchTerm(userSearch: str, description: str = None):
+    data = {}
+    searchTerm = generateSearchTerm(userSearch, description)
+    
+        
+     
+    amazon, bestbuy = getAmazonSearch(searchTerm), getBestBuySearch(searchTerm)
+    retries = 3
+    
+    if not amazon:
+        trials = 0
+        while trials < retries:
+            newSearch = generateSearchTerm(userSearch, description, searchTerm)
+            amazon = getAmazonSearch(newSearch)
+            trials += 1
+
+    if not bestbuy:
+        trials = 0
+        while trials < retries:
+            newSearch = generateSearchTerm(userSearch, description, searchTerm)
+            bestbuy = getBestBuySearch(newSearch)
+            trials += 1
+
+
+    
+    data["amazon"] = amazon
+        
+  
+    data["bestbuy"] = bestbuy
+    
+    return data
+	
+
 app.include_router(router)
-app.include_router(amazon.router)
-app.include_router(bestbuy.router)
+
 
