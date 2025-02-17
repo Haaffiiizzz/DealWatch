@@ -107,5 +107,5 @@ def getSearchData(searchTerm: str):
 
 
 # # print(getItemData("https://www.bestbuy.ca/en-ca/product/razer-basilisk-v3-x-hyperspeed-18000-dpi-wireless-optical-gaming-mouse-classic-black/16932767?icmp=Recos_4across_y_mght_ls_lk"))
-# print(getSearchData("27-32 inch 4K gaming monitor 144Hz G-Sync FreeSync HDR"))
+# print(getSearchData("Razer wireless gaming headphones low latency good battery life"))
 # DRIVER.quit()

@@ -69,33 +69,24 @@ def generateSearchTerm( userSearch: str, userDescription: str = None, prevGenera
     
 
 def userPromptSimilarity(amazonData, bestBuyData):
-    """Here I am using gpt text embeddings to compare the similarity of the search results
+    """Here I am using gpt to compare the similarity of the search results
     to the user's description and return the best match.
     """
     return True
 
-def get_embedding(text):
-    """Generate an embedding vector using OpenAI's GPT model."""
-    GPT_API_KEY = os.getenv('GPT_API_KEY')
-    client = OpenAI(api_key = GPT_API_KEY)
-    response = client.embeddings.create(
-        input=text,
-        model="text-embedding-ada-002"
-    )
-    return response.data[0].embedding
+#
 
 
 def main():
-    description = "I'm looking for a 4K gaming monitor with at least a 144Hz refresh rate,\
-    low response time, and adaptive sync support (G-Sync or FreeSync). 32 inches, \
-    with good color accuracy and HDR support."
-    userSearch = "4K gaming monitor"
+    description = "I need a good headphones with low latency for gaming. I want it to be wireless and have a good battery life."
+    userSearch = "razer headphones"
     searchTerm = generateSearchTerm(userSearch, description)
         
     print(searchTerm)
     amazon, bestbuy = getSearches(searchTerm)
     if not amazon.__class__ == Exception:
         print("Amazon Data:")
+        print(amazon)
         for item in amazon:
             print(item)
             print()
@@ -106,6 +97,7 @@ def main():
 
     if not bestbuy.__class__ == Exception:
         print("BestBuy Data:")
+        print(bestbuy)
         for item in bestbuy:
             print(item)
             print()
@@ -114,13 +106,6 @@ def main():
     else:
         print("Couldn't get BestBuy Data. Error:", bestbuy)
     
-        
-        
-            
-        
-    
-    # with open("testembed.json", "w") as f:
-    #     json.dump(get_embedding("razer barracuda x"), f, indent=4)
     
             
 if __name__ == "__main__":
