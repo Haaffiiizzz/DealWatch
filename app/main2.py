@@ -131,8 +131,6 @@ Respond with **only the JSON output**, without additional explanation.
     if result.endswith("```"):
         result = result.split("```")[0].strip()
 
-    print(f"Raw response before cleaning: {result}")
-
     try:
         return json.loads(result)
     except json.JSONDecodeError as e:
@@ -140,56 +138,3 @@ Respond with **only the JSON output**, without additional explanation.
         return []
         
 
-description = "I need a good headphones with low latency for gaming. I want it to be wireless and have a good battery life."
-userSearch = "razer headphones"
-#searchTerm = generateSearchTerm(userSearch, description)
-#amazon, bestbuy = getAmazonSearch(searchTerm), getBestBuySearch(searchTerm)
-#print(userPromptSimilarity(amazon, bestbuy, description, userSearch))
-
-'''def main():
-    description = "I need a good headphones with low latency for gaming. I want it to be wireless and have a good battery life."
-    userSearch = "razer headphones"
-    searchTerm = generateSearchTerm(userSearch, description)
-    print(f"Generated Search Term: {searchTerm}")
-        
-     
-    amazon, bestbuy = getAmazonSearch(searchTerm), getBestBuySearch(searchTerm)
-    retries = 3
-    
-    if not amazon:
-        trials = 0
-        while trials < retries:
-            newSearch = generateSearchTerm(userSearch, description, searchTerm)
-            amazon = getAmazonSearch(newSearch)
-            trials += 1
-
-    if not bestbuy:
-        trials = 0
-        while trials < retries:
-            newSearch = generateSearchTerm(userSearch, description, searchTerm)
-            bestbuy = getBestBuySearch(newSearch)
-            trials += 1
-
-
-    if amazon:
-        print("Amazon Data:")
-        for item in amazon:
-            print(item)
-            print()
-        
-    else:
-        print("Couldn't get Amazon Data")
-
-    if bestbuy:
-        print("BestBuy Data:")
-        for item in bestbuy:
-            print(item)
-            print()
-        
-    else:
-        print("Couldn't get BestBuy Data")
-     
-    
-            
-if __name__ == "__main__":
-    main()  '''
