@@ -102,12 +102,17 @@ def getSearchData(searchTerm: str):
         imageTag = item.find("img")
         ratingTag = item.find("meta", {"itemprop": "ratingValue"})
         numRatingsTag = item.find("meta", {"itemprop": "reviewCount"})
+         
+        itemLink = item.find("a")
+        itemLink = itemLink.get('href') if itemLink else None
+        itemLink = f"https://www.bestbuy.ca{itemLink}"
         
         Dict["Item"] = nameTag.text.strip() if nameTag else None
         Dict["Price"] = priceTag.text.strip().split("$")[1] if priceTag else None
         Dict["ImageSrc"] = imageTag.get('src') if imageTag else None
         Dict["rating"] = ratingTag.get('content') if ratingTag else None
         Dict["numRatings"] = numRatingsTag.get('content') if numRatingsTag else None
+        Dict["itemLink"] = itemLink
         
         resultsList.append(Dict)
     
@@ -117,5 +122,5 @@ def getSearchData(searchTerm: str):
 
 
 # # print(getItemData("https://www.bestbuy.ca/en-ca/product/razer-basilisk-v3-x-hyperspeed-18000-dpi-wireless-optical-gaming-mouse-classic-black/16932767?icmp=Recos_4across_y_mght_ls_lk"))
-# print(getSearchData("Razer wireless gaming headphones low latency long battery life"))
+    # print(getSearchData("Razer wireless gaming headphones low latency long battery life"))
 # DRIVER.quit()
