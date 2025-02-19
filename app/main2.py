@@ -113,7 +113,6 @@ Additional user description: **"{userDescription}"**
 Respond with **only the JSON output**, without additional explanation.
 """
     
-    print(amazonData)
         
     completion = client.chat.completions.create(
         model="gpt-4o-mini",

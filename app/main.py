@@ -25,29 +25,47 @@ def root():
 
 @router.get("/searchterm")
 def compareSearchTerm(body: SearchData):
+    """Taking input through the body of the request, this function will generate a search term
+    using the user's search input and description. It will then use this search term to get the search results
+    from Amazon and BestBuy. It will then compare the search results to the user's description and return the best match.
+    We can then return all of this data to the user.
+    """
+    
+    data = {}
+    data["input"] = body
+    
     userSearch = body.userSearch
     description = body.description
     searchTerm = generateSearchTerm(userSearch, description)
     
+    
     amazon, bestbuy = getAmazonSearch(searchTerm), getBestBuySearch(searchTerm)
-    print(amazon, "AMAZON")
+    
+    
     retries = 3
     
     if not amazon:
         trials = 0
         while trials < retries:
-            newSearch = generateSearchTerm(userSearch, description, searchTerm)
-            amazon = getAmazonSearch(newSearch)
+            searchTerm = generateSearchTerm(userSearch, description, searchTerm)
+            amazon = getAmazonSearch(searchTerm)
             trials += 1
 
     if not bestbuy:
         trials = 0
         while trials < retries:
-            newSearch = generateSearchTerm(userSearch, description, searchTerm)
-            bestbuy = getBestBuySearch(newSearch)
+            searchTerm = generateSearchTerm(userSearch, description, searchTerm)
+            bestbuy = getBestBuySearch(searchTerm)
             trials += 1
 
-    return userPromptSimilarity(amazon, bestbuy, description, userSearch)
+    data["Amazon"] = amazon
+    data["BestBuy"] = bestbuy
+    data["generatedSearchTerm"] = searchTerm
+    
+    similarityRanking = userPromptSimilarity(amazon, bestbuy, description, userSearch)
+    data["ranking"] = similarityRanking
+    
+    return data
     
     
 app.include_router(router)

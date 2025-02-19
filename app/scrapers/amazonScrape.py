@@ -133,18 +133,23 @@ def getSearchData(search: str):
         imageSrc = item.find("img", {"class": "s-image"})
         imageSrc = imageSrc.get('src')
         
+        itemLink = item.find("a")
+        itemLink = itemLink.get('href') if itemLink else None
+        itemLink = f"https://www.amazon.ca{itemLink}" if itemLink else None
+        
         Dict["Brand"] = brand
         Dict["Title"] = title
         Dict["rating"] = rating
         Dict["numRatings"] = numRatings
         Dict["Price"] = price
         Dict["ImageSrc"] = imageSrc
+        Dict["ItemLink"] = itemLink
         
         results.append(Dict)
     
     return results
     
-# print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share")) 
+# # print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share")) 
 # getSearchData("32 inch 4K gaming monitor 144Hz G-Sync FreeSync HDR low response time")
 # for item in getSearchData("razer barracuda x"):
 #     print(item, "\n")
