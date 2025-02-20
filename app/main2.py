@@ -134,6 +134,6 @@ Respond with **only the JSON output**, without additional explanation.
         return json.loads(result)
     except json.JSONDecodeError as e:
         print("Error: GPT response is not valid JSON!", e)
-        return []
+        return e
         
 

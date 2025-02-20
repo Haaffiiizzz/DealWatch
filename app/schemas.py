@@ -7,3 +7,6 @@ class LinkData(BaseModel):
 class SearchData(BaseModel):
     userSearch: str
     description: str = None
+
+class Wishlist(BaseModel):
+    wishlistURL : str
