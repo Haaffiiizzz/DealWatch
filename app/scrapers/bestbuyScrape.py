@@ -8,6 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import requests
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
@@ -34,16 +35,16 @@ def getItemData(itemLink: str):
     Requests cant be used here as the data (price specifically) is loaded dynamically using javascript.
     So I am using selenium instead on headless mode.
     """
-    options = ChromeOptions()
-    options.add_argument("--headless=new")
-    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+    # options = ChromeOptions()
+    # options.add_argument("--headless=new")
+    # options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
-    DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    DRIVER.get(itemLink)
+    # DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    # DRIVER.get(itemLink)
+    page = requests.get(itemLink, headers=HEADERS)
+    soup = BeautifulSoup(page.content, "html.parser")
     
-    soup = BeautifulSoup(DRIVER.page_source, "html.parser")
-    
-    DRIVER.quit()
+    # DRIVER.quit()
     
     nameTag = soup.find("h1", {"class": "font-best-buy text-body-lg font-medium sm:text-title-sm"})
     brandTag = soup.find("a", {"data-automation": "pdp-brandname-link"})
@@ -121,6 +122,6 @@ def getSearchData(searchTerm: str):
     return resultsList
 
 
-# # print(getItemData("https://www.bestbuy.ca/en-ca/product/razer-basilisk-v3-x-hyperspeed-18000-dpi-wireless-optical-gaming-mouse-classic-black/16932767?icmp=Recos_4across_y_mght_ls_lk"))
+print(getItemData("https://www.bestbuy.ca/en-ca/product/17902796"))
     # print(getSearchData("Razer wireless gaming headphones low latency long battery life"))
 # DRIVER.quit()
