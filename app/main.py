@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from app.main2 import generateSearchTerm, getAmazonSearch, getBestBuySearch, userPromptSimilarity
-from app.schemas import SearchData, Wishlist
+from app.schemas import SearchData, Wishlist, WishlistItem
 from app.scrapers import amazonScrape
 import time
 
@@ -70,7 +70,7 @@ def compareSearchTerm(body: SearchData):
     return data
 
 @router.get("/wishlist/")
-def getForWishlist(body: Wishlist):
+def getWishlist(body: Wishlist):
     """In this function,  I will first get the items from the amazon wishlist, 
     then I will get search results from Amazon and BestBuy for each item in the wishlist.
     This will be displayed to users so they can see the best price for each item in their wishlist.
@@ -79,7 +79,16 @@ def getForWishlist(body: Wishlist):
     wishListItems = amazonScrape.getWishlistData(url)
     
     return wishListItems
-    
+
+@router.get("/wishlist/search/")
+def searchForWishlist(body: WishlistItem):
+    """In this function, I will get search results from Amazon and BestBuy for each item in the wishlist.
+    Each item is gonna be passed as a json object in the body of the request one at a time.
+    This will be displayed to users so they can see the best price for each item in their wishlist.
+    """
+    item = body.item
+    searchTerm = generateSearchTerm(item["Title"]) 
+    return searchTerm
     
 app.include_router(router)
 

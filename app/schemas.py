@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Dict, Any
 
 
 class LinkData(BaseModel):
@@ -10,3 +11,6 @@ class SearchData(BaseModel):
 
 class Wishlist(BaseModel):
     wishlistURL : str
+    
+class WishlistItem(BaseModel):
+    item: Dict[str, Any]
