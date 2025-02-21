@@ -10,6 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import requests
 import os
+import shutil
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
@@ -84,8 +85,19 @@ def getSearchData(searchTerm: str):
     options.add_argument("--no-sandbox")
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
-    options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-    service = Service(os.environ.get("CHROMEDRIVER_PATH"))
+    chrome_bin = os.environ.get("GOOGLE_CHROME_BIN") or shutil.which("chrome")
+    if not chrome_bin:
+        raise Exception("Chrome binary not found!")
+    options.binary_location = chrome_bin
+
+    
+    chromedriver_path = os.environ.get("CHROMEDRIVER_PATH") or shutil.which("chromedriver")
+    if not chromedriver_path:
+        raise Exception("Chromedriver not found!")
+    service = Service(chromedriver_path)
+    
+    # options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    # service = Service(os.environ.get("CHROMEDRIVER_PATH"))
     
     DRIVER = webdriver.Chrome(service=service, options=options)
     
