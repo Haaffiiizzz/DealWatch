@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from app.main2 import generateSearchTerm, getAmazonSearch, getBestBuySearch, userPromptSimilarity
 from app.schemas import SearchData, Wishlist, WishlistItem, ItemData, ItemSearch
@@ -146,19 +146,21 @@ def getItem(body: ItemData):
     """In this function, I will returning just the data for a particular item's link.
     """
     itemLink = body.itemLink
-    site = body.site
-    
-    if site.upper() == "A": #if amazon site
+    site = body.site.upper()
+
+    if site == "A":  # If Amazon
         try:
             item = amazonScrape.getItemData(itemLink)
         except Exception as e:
-            item = {"error": str(e)}
-    else:
+            raise HTTPException(status_code=500, detail=str(e))
+    elif site == "B":  # If BestBuy
         try:
             item = bestbuyScrape.getItemData(itemLink)
         except Exception as e:
-            item = {"error": str(e)}
-    
+            raise HTTPException(status_code=500, detail=str(e))
+    else:
+        raise HTTPException(status_code=400, detail="Invalid site. Use 'A' for Amazon or 'B' for BestBuy.")
+
     return item
 
 @router.get("/search/item/")
@@ -178,3 +180,4 @@ def searchFromItem(body: ItemSearch):
 app.include_router(router)
 
 
+#need tp chaneg amazon to selenium

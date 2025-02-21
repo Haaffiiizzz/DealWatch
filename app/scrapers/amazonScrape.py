@@ -7,13 +7,13 @@ import requests
 # url = 'https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share'
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
     'Accept-Language': 'en-US,en;q=0.9',
     'Accept-Encoding': 'gzip, deflate, br',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
     'Connection': 'keep-alive',
     'Referer': 'https://www.google.com/',
-    'DNT': '1',
     'Upgrade-Insecure-Requests': '1',
+    'DNT': '1'
 }
 
 def getWishlistData(wishlistURL: str):
@@ -66,6 +66,7 @@ def getItemData(itemLink: str):
     site = requests.get(itemLink, headers=HEADERS)
     soup = BeautifulSoup(site.content, 'html.parser')
     
+    
     titleTag = soup.find("span", {"id": "productTitle"})
     title = titleTag.text.strip() if titleTag else None
     
@@ -99,12 +100,10 @@ def getSearchData(search: str):
     """
     results = []
     search = search.replace(" ", "+")
-    url = f"https://www.amazon.ca/s?k={search}"
+    url = f"https://www.amazon.ca/s?k={search}&ref=nb_sb_noss_1"
     
     site = requests.get(url, headers=HEADERS)
-    soup = BeautifulSoup(site.content, 'html.parser')
-    print(soup)
-    
+    soup = BeautifulSoup(site.content, 'html.parser')    
     
     eachItem = soup.find_all("div", {"role": "listitem"})
     top5 = eachItem[4:9]
@@ -144,8 +143,8 @@ def getSearchData(search: str):
     
     return results
     
-# # print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share")) 
+# print(getWishlistData("https://www.amazon.ca/hz/wishlist/ls/1RSXQTAQQ6AQ2?ref_=wl_share")) 
 # getSearchData("32 inch 4K gaming monitor 144Hz G-Sync FreeSync HDR low response time")
 # for item in getSearchData("razer barracuda x"):
 #     print(item, "\n")
-print(getItemData("https://www.amazon.ca/dp/B0BTFNCTXY/?coliid=I2KUWJHA0PQZK2&colid=1RSXQTAQQ6AQ2&psc=0&ref_=list_c_wl_lv_ov_lig_dp_it"))
+#print(getItemData("https://www.amazon.ca/dp/B0BTFNCTXY/?coliid=I2KUWJHA0PQZK2&colid=1RSXQTAQQ6AQ2&psc=0#&ref_=list_c_wl_lv_ov_lig_dp_it"))

@@ -21,4 +21,3 @@ class ItemData(BaseModel):
     
 class ItemSearch(BaseModel):
     item: Dict[str, Any]
-    site: str

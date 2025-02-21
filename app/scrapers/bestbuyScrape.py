@@ -59,7 +59,7 @@ def getItemData(itemLink: str):
    
     
     Dict = {}
-    Dict["Item"] = nameTag.text.strip() if nameTag else None
+    Dict["Title"] = nameTag.text.strip() if nameTag else None
     Dict["Brand"] = brandTag.text.strip() if brandTag else None
     Dict["Price"] = priceTag.text.strip().split("$")[1] if priceTag else None
     Dict["ImageSrc"] = imageTag.get('src') if imageTag else None
@@ -81,7 +81,7 @@ def getSearchData(searchTerm: str):
     # options.add_argument("--headless=new")
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
-    DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options) #service=Service(ChromeDriverManager().install()), 
     DRIVER.get(searchLink)
     
     
@@ -111,7 +111,7 @@ def getSearchData(searchTerm: str):
         itemLink = itemLink.get('href') if itemLink else None
         itemLink = f"https://www.bestbuy.ca{itemLink}"
         
-        Dict["Item"] = nameTag.text.strip() if nameTag else None
+        Dict["Title"] = nameTag.text.strip() if nameTag else None
         Dict["Price"] = priceTag.text.strip().split("$")[1] if priceTag else None
         Dict["ImageSrc"] = imageTag.get('src') if imageTag else None
         Dict["rating"] = ratingTag.get('content') if ratingTag else None
@@ -126,5 +126,6 @@ def getSearchData(searchTerm: str):
 
 
 # print(getItemData("https://www.bestbuy.ca/en-ca/product/17902796"))
-    # print(getSearchData("Razer wireless gaming headphones low latency long battery life"))
+
 # DRIVER.quit()
+# print(getSearchData("Razer wireless gaming headphones low latency long battery life"))
