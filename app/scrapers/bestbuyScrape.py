@@ -125,6 +125,6 @@ def getSearchData(searchTerm: str):
     return resultsList
 
 
-print(getItemData("https://www.bestbuy.ca/en-ca/product/17902796"))
+# print(getItemData("https://www.bestbuy.ca/en-ca/product/17902796"))
     # print(getSearchData("Razer wireless gaming headphones low latency long battery life"))
 # DRIVER.quit()

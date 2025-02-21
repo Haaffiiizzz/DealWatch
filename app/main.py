@@ -25,6 +25,7 @@ app.add_middleware(
 def root():
     return {
         "message": "Welcome to the DealWatch API. Check out the documentation at thislink/docs and the code on GitHub at github.com/haaffiiizzz/DealWatch",
+        
         "endpoints": {
             "/search/searchterm/": {
                 "description": "Search using a search term and description sent through the body of the request",
@@ -72,34 +73,33 @@ def getAndCompare(userSearchTerm: str, userDescription: str = None, generatedSea
     data = {}
     data["input"] = {"userSearch": userSearchTerm, "description": userDescription}
     
-    amazon, bestbuy = getAmazonSearch(searchTerm), getBestBuySearch(searchTerm)
+    amazon, bestbuy = getAmazonSearch(userSearchTerm), getBestBuySearch(userSearchTerm)
 
     retries = 3
     
     if not amazon:
         trials = 0
         while trials < retries:
-            searchTerm = generateSearchTerm(userSearchTerm, userDescription, searchTerm)
-            amazon = getAmazonSearch(searchTerm)
+            userSearchTerm = generateSearchTerm(userSearchTerm, userDescription, userSearchTerm)
+            amazon = getAmazonSearch(userSearchTerm)
             trials += 1
 
     if not bestbuy:
         trials = 0
         while trials < retries:
-            searchTerm = generateSearchTerm(userSearchTerm, userDescription, searchTerm)
-            bestbuy = getBestBuySearch(searchTerm)
+            userSearchTerm = generateSearchTerm(userSearchTerm, userDescription, userSearchTerm)
+            bestbuy = getBestBuySearch(userSearchTerm)
             trials += 1
 
     data["Amazon"] = amazon
     data["BestBuy"] = bestbuy
-    data["generatedSearchTerm"] = searchTerm
+    data["generatedSearchTerm"] = userSearchTerm
     
     similarityRanking = userPromptSimilarity(amazon, bestbuy, userDescription, userSearchTerm)
     data["ranking"] = similarityRanking
-    
     return data
     
-@router.get("search/searchterm/")
+@router.get("/search/searchterm/")
 def searchFromSearchTerm(body: SearchData):
     """Taking input through the body of the request, this function will generate a search term
     using the user's search input and description. It will then use these information to call the 

@@ -31,23 +31,23 @@ def getWishlistData(wishlistURL: str):
     numRatings = soup.find_all(id=re.compile(r'^review_count_'))
     
 
-    brands = [brand.text.strip() for brand in brands if "by" in brand.text.strip().lower()]   # issue with having tags that fit filter but its not the brand name
+    brands = [brand.text.strip() if brand and "by" in brand.text.strip().lower() else None for brand in brands]   # issue with having tags that fit filter but its not the brand name
     
     wishlist = []
 
     for nameTag, brand, priceTag, imageSrcTag, rating, numRating in zip(names, brands, prices, images, ratings, numRatings):
         Dict = {}
         
-        title = nameTag.text.strip()
+        title = nameTag.text.strip() if nameTag else None
         brand = " ".join(brand.split()[1:])
         
         whole = priceTag.find("span", {"class": "a-price-whole"})
         frac = priceTag.find("span", {"class": "a-price-fraction"})
-        price = f"{whole.text.strip()}{frac.text.strip()}"
+        price = f"{whole.text.strip()}{frac.text.strip()}" if whole and frac else None
         
-        src = imageSrcTag.get('src')
-        numRating = numRating.text.strip()
-        rating = rating.text.split(" ")[0]
+        src = imageSrcTag.get('src') if imageSrcTag else None
+        numRating = numRating.text.strip() if numRating else None
+        rating = rating.text.split(" ")[0]  if rating else None
         
         Dict["Title"] = title
         Dict["Brand"] = brand
@@ -63,34 +63,27 @@ def getWishlistData(wishlistURL: str):
 def getItemData(itemLink: str):
     Dict = {}
 
-   
     site = requests.get(itemLink, headers=HEADERS)
     soup = BeautifulSoup(site.content, 'html.parser')
     
-    title = soup.find("span", {"id": "productTitle"}).text.strip()
+    titleTag = soup.find("span", {"id": "productTitle"})
+    title = titleTag.text.strip() if titleTag else None
     
-    whole = soup.find("span", {"class": "a-price-whole"}).text.strip()
-    frac = soup.find("span", {"class": "a-price-fraction"}).text.strip()
-    price = f"{whole}{frac}"
+    wholeTag = soup.find("span", {"class": "a-price-whole"})
+    fracTag = soup.find("span", {"class": "a-price-fraction"})
+    price = f"{wholeTag.text.strip()}{fracTag.text.strip()}" if wholeTag and fracTag else None
     
-    brand = " ".join(soup.find("a", {"id": "bylineInfo"}).text.strip().split()[1:])
+    brandTag = soup.find("a", {"id": "bylineInfo"})
+    brand = " ".join(brandTag.text.strip().split()[1:]) if brandTag else None
     
-    image = soup.find("img", {"id": "landingImage"})
-    imageSrc = image.get('src')
+    imageTag = soup.find("img", {"id": "landingImage"})
+    imageSrc = imageTag.get('src') if imageTag else None
     
     ratingsTag = soup.find("span", {"id": "acrCustomerReviewText"})
-
-    if ratingsTag:
-        
-        numRatings = ratingsTag.text # we get something 767 ratings
-        numRatings = numRatings.split(" ")[0]
-    else:
-        numRatings = None
+    numRatings = ratingsTag.text.split(" ")[0] if ratingsTag else None
     
-    rating = soup.find("span", {"id": "acrPopover"})
-    rating = rating.text.strip() if rating else None
-    rating = rating.split()[0]
-    
+    ratingTag = soup.find("span", {"id": "acrPopover"})
+    rating = ratingTag.text.strip().split()[0] if ratingTag else None
     
     Dict["Title"] = title
     Dict["Brand"] = brand
@@ -110,6 +103,7 @@ def getSearchData(search: str):
     
     site = requests.get(url, headers=HEADERS)
     soup = BeautifulSoup(site.content, 'html.parser')
+    print(soup)
     
     
     eachItem = soup.find_all("div", {"role": "listitem"})
@@ -154,3 +148,4 @@ def getSearchData(search: str):
 # getSearchData("32 inch 4K gaming monitor 144Hz G-Sync FreeSync HDR low response time")
 # for item in getSearchData("razer barracuda x"):
 #     print(item, "\n")
+print(getItemData("https://www.amazon.ca/dp/B0BTFNCTXY/?coliid=I2KUWJHA0PQZK2&colid=1RSXQTAQQ6AQ2&psc=0&ref_=list_c_wl_lv_ov_lig_dp_it"))
