@@ -41,10 +41,13 @@ def getItemData(itemLink: str):
 
     # DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     # DRIVER.get(itemLink)
-    page = requests.get(itemLink, headers=HEADERS)
-    soup = BeautifulSoup(page.content, "html.parser")
+    
+    # soup = BeautifulSoup(DRIVER.page_source, "html.parser")
     
     # DRIVER.quit()
+    
+    response = requests.get(itemLink, headers=HEADERS)
+    soup = BeautifulSoup(response.content, "html.parser")
     
     nameTag = soup.find("h1", {"class": "font-best-buy text-body-lg font-medium sm:text-title-sm"})
     brandTag = soup.find("a", {"data-automation": "pdp-brandname-link"})

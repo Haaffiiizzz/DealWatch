@@ -17,6 +17,7 @@ HEADERS = {
 }
 
 def getWishlistData(wishlistURL: str):
+    
  
     site = requests.get(wishlistURL, headers=HEADERS)
 
@@ -59,7 +60,7 @@ def getWishlistData(wishlistURL: str):
     
     return wishlist
 
-def getDataLink(itemLink: str):
+def getItemData(itemLink: str):
     Dict = {}
 
    

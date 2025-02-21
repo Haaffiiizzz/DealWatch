@@ -1,16 +1,15 @@
 # Web Scraping API for Amazon and Best Buy
 
 ## Description
-This project is a web scraping API designed to scrape product details from Amazon and Best Buy. The API supports scraping individual product pages or Amazon wishlists. Data was initially stored in a PostgreSQL database, with user authentication set up, though the database connection has been temporarily removed.
+This project is a web scraping API designed to scrape product details from Amazon and Best Buy. The API supports scraping individual product pages or Amazon wishlists. 
 
-This standalone project has significantly enhanced my skills in web scraping and API development. In the future, I plan to use this API as a foundation for building a complete shopping site scraper once I gain more experience in web development.
+This project has significantly enhanced my skills in web scraping and API development, and integrating LLMs. I am currently working on building the frontend for this using react.
 
 ## Skills and Technologies Utilized
 - **FastAPI**  
 - **Requests**  
-- **Selenium**  
-- **PostgreSQL**  
-- **SQLAlchemy**  
+- **Selenium**
+- **OpenAI GPT-4o**  
 - **RESTful API Development**  
 - **Web Scraping**  
 - **Postman**
