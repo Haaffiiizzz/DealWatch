@@ -4,7 +4,7 @@
 This project is a web scraping API designed to scrape product details from Amazon and Best Buy. The API supports scraping individual product pages or Amazon wishlists. 
 
 This project has significantly enhanced my skills in web scraping and API development, and integrating LLMs. I am currently working on building the frontend for this using react.
-Check out the documentation here [DealWatch Docs](https://www.dealwatch.abdulhafizdada.com/docs) and the API here [DealWatch](https://www.dealwatch.abdulhafizdada.com/)
+Check out the documentation here [DealWatch Docs](http://www.dealwatch.abdulhafizdada.com/docs) and the API here [DealWatch](http://www.dealwatch.abdulhafizdada.com/)
 
 ## Skills and Technologies Utilized
 - **FastAPI**  
